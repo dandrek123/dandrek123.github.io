@@ -335,7 +335,9 @@
       border-radius: 50%;
       border: 1px solid rgba(255,255,255,.08);
       animation: orbit 20s linear infinite;
+      touch-action: none;
     }
+    .orbital.is-grabbing { animation-play-state: paused; }
     .orbital::before, .orbital::after {
       content: "";
       position: absolute;
@@ -347,14 +349,27 @@
     @keyframes orbit { to { transform: rotate(360deg); } }
     .orbit-dot {
       position: absolute;
-      width: 14px;
-      height: 14px;
+      width: 16px;
+      height: 16px;
       border-radius: 50%;
       background: var(--acid);
       top: 13%;
       left: 17%;
+      z-index: 5;
+      cursor: grab;
+      touch-action: none;
+      user-select: none;
       box-shadow: 0 0 32px rgba(185,255,57,.8);
+      transition: top .65s var(--ease), left .65s var(--ease), transform .2s var(--ease), box-shadow .2s;
     }
+    .orbit-dot::after {
+      content: "";
+      position: absolute;
+      inset: -16px;
+      border-radius: 50%;
+    }
+    .orbit-dot:hover { transform: scale(1.35); box-shadow: 0 0 42px rgba(185,255,57,.95); }
+    .orbit-dot.is-dragging { cursor: grabbing; transform: scale(1.45); transition: transform .15s, box-shadow .15s; box-shadow: 0 0 52px rgba(185,255,57,1); }
     .system-card {
       position: relative;
       width: min(100%, 470px);
@@ -427,8 +442,17 @@
     .float-chip.two::before { background: var(--violet); }
     @keyframes float { 50% { transform: translateY(-12px); } }
 
-    .marquee-wrap { border-block: 1px solid var(--line); overflow: hidden; background: rgba(255,255,255,.018); }
-    .marquee { display: flex; width: max-content; animation: marquee 26s linear infinite; }
+    .marquee-wrap {
+      border-block: 1px solid var(--line);
+      overflow: hidden;
+      background: rgba(255,255,255,.018);
+      cursor: grab;
+      touch-action: pan-y;
+      user-select: none;
+    }
+    .marquee-wrap:active, .marquee-wrap.is-dragging { cursor: grabbing; }
+    .marquee-wrap:focus-visible { outline: 2px solid var(--acid); outline-offset: -2px; }
+    .marquee { display: flex; width: max-content; will-change: transform; }
     .marquee-track { display: flex; align-items: center; gap: 28px; padding: 22px 14px; }
     .marquee span { display: inline-flex; align-items: center; gap: 28px; color: #aaaab4; font-size: .79rem; font-weight: 850; letter-spacing: .19em; text-transform: uppercase; white-space: nowrap; }
     .marquee span::after { content: "✦"; color: var(--acid); font-size: .65rem; }
@@ -816,11 +840,82 @@
       *, *::before, *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; }
       .page-glow, .cursor, .cursor-dot { display: none !important; }
     }
+
+
+    /* Added interaction layer */
+    .scroll-progress-hit {
+      position: fixed; inset: 0 0 auto; height: 18px; z-index: 1001;
+      cursor: ew-resize; touch-action: none; user-select: none;
+    }
+    .scroll-progress-hit::after {
+      content: ''; position: absolute; left: 0; right: 0; top: 0; height: 5px;
+      background: transparent; transition: background .18s ease;
+    }
+    .scroll-progress-hit:hover::after,
+    .scroll-progress-hit.is-dragging::after { background: rgba(255,255,255,.06); }
+    .scroll-progress-hit.is-dragging { cursor: grabbing; }
+    .scroll-progress-hit:focus-visible { outline: 2px solid var(--acid); outline-offset: -2px; }
+
+    .availability-panel {
+      position: fixed; top: 112px; right: max(20px, calc((100vw - var(--max))/2)); z-index: 920;
+      width: min(360px, calc(100vw - 40px)); padding: 18px;
+      border: 1px solid var(--line-strong); border-radius: 24px;
+      background: rgba(12,14,20,.94); backdrop-filter: blur(22px);
+      box-shadow: 0 28px 80px rgba(0,0,0,.42);
+      opacity: 0; transform: translateY(-10px) scale(.98); pointer-events: none;
+      transition: opacity .25s var(--ease), transform .25s var(--ease);
+    }
+    .availability-panel.is-open { opacity: 1; transform: none; pointer-events: auto; }
+    .availability-panel h3 { margin: 0 0 6px; font-size: 1.05rem; }
+    .availability-panel p { margin: 0 0 14px; color: var(--muted); font-size: .84rem; }
+    .availability-grid { display:grid; gap:8px; }
+    .availability-grid a { display:flex; justify-content:space-between; align-items:center; gap:16px; padding:11px 12px; border-radius:14px; background:rgba(255,255,255,.045); border:1px solid var(--line); font-size:.82rem; font-weight:750; }
+    .availability-grid a:hover { border-color:rgba(185,255,57,.45); background:rgba(185,255,57,.07); }
+
+    .terminal-command { margin-top: 8px; }
+    .terminal-input {
+      min-width: 0; flex: 1; border: 0; outline: 0; padding: 0;
+      color: var(--text); background: transparent; font: inherit; caret-color: var(--acid);
+    }
+    .terminal-input::placeholder { color:#565a66; }
+    .terminal-response { min-height: 1.35em; color: var(--acid); white-space: normal; }
+    .terminal-hint { margin-top: 8px; color:#555965; font-size:.78em; }
+
+    .gallery-stage { touch-action: pan-y; cursor: grab; user-select:none; }
+    .gallery-stage.is-dragging { cursor: grabbing; }
+    .gallery-stage img { transition: transform .22s var(--ease), opacity .22s; pointer-events:none; }
+
+    .float-chip { cursor: grab; touch-action:none; user-select:none; }
+    .float-chip.is-dragging { cursor: grabbing; animation-play-state: paused; z-index:8; }
+
+    .project-card { --spot-x:50%; --spot-y:50%; }
+    .project-card::after {
+      content:""; position:absolute; inset:0; border-radius:inherit; pointer-events:none; opacity:0;
+      background:radial-gradient(420px circle at var(--spot-x) var(--spot-y), rgba(104,228,255,.09), transparent 55%);
+      transition:opacity .25s;
+    }
+    .project-card:hover::after { opacity:1; }
+
+    .tech-list li { position:relative; cursor:help; }
+    .tech-list li::after {
+      content:attr(data-used); position:absolute; left:50%; bottom:calc(100% + 10px); width:max-content; max-width:220px;
+      transform:translate(-50%,6px); padding:8px 10px; border-radius:10px; color:#eef0f4; background:#171a22;
+      border:1px solid var(--line-strong); box-shadow:0 12px 35px rgba(0,0,0,.35); font-size:.67rem; line-height:1.35;
+      opacity:0; pointer-events:none; transition:.18s var(--ease); z-index:20;
+    }
+    .tech-list li[data-used]:hover::after, .tech-list li[data-used]:focus-visible::after { opacity:1; transform:translate(-50%,0); }
+
+    @media (max-width: 760px) {
+      .availability-panel { top: 98px; right: 20px; }
+      .tech-list li::after { display:none; }
+    }
+
   </style>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
   <div class="scroll-progress" aria-hidden="true"></div>
+  <div class="scroll-progress-hit" role="slider" tabindex="0" aria-label="Scroll through portfolio" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"></div>
   <div class="page-glow" aria-hidden="true"></div>
   <div class="cursor" aria-hidden="true"></div>
   <div class="cursor-dot" aria-hidden="true"></div>
@@ -836,12 +931,23 @@
         <a class="hover-target" href="#about">About</a>
         <a class="hover-target" href="#skills">Skills</a>
       </nav>
-      <a class="nav-cta magnetic hover-target" href="mailto:dandre.a.knight@gmail.com">
+      <button class="nav-cta magnetic hover-target availability-toggle" type="button" aria-expanded="false" aria-controls="availabilityPanel">
         <span class="status-dot" aria-hidden="true"></span>
         Available for opportunities
-      </a>
+      </button>
     </div>
   </header>
+
+
+  <aside class="availability-panel" id="availabilityPanel" aria-hidden="true">
+    <h3>Open to opportunities</h3>
+    <p>Entry-level software engineering, AI, IT, systems, and cybersecurity roles. Remote, hybrid, or relocation.</p>
+    <div class="availability-grid">
+      <a href="mailto:dandre.a.knight@gmail.com"><span>Email me</span><span>↗</span></a>
+      <a href="https://www.linkedin.com/in/d%E2%80%99andre-knight-358836251" target="_blank" rel="noopener"><span>LinkedIn</span><span>↗</span></a>
+      <a href="DAndre_Knight_Resume.pdf" target="_blank" rel="noopener"><span>View résumé</span><span>↗</span></a>
+    </div>
+  </aside>
 
   <main id="main">
     <section class="hero" id="top">
@@ -873,7 +979,7 @@
         </div>
 
         <div class="hero-visual reveal" aria-label="Animated developer system preview">
-          <div class="orbital" aria-hidden="true"><i class="orbit-dot"></i></div>
+          <div class="orbital" aria-label="Interactive orbit: drag the glowing dot and release it to return to orbit"><i class="orbit-dot" role="button" tabindex="0" aria-label="Draggable orbit dot"></i></div>
           <div class="system-card tilt-card">
             <div class="system-top">
               <div class="window-dots" aria-hidden="true"><i></i><i></i><i></i></div>
@@ -889,6 +995,9 @@
               <div><span class="key">mobility</span>: <span class="string">"Open to relocate"</span></div>
               <br />
               <div class="terminal-row"><span class="prompt">$</span><span class="typing" data-text="build something meaningful"></span><span class="caret" aria-hidden="true">▌</span></div>
+              <div class="terminal-row terminal-command"><span class="prompt">$</span><input class="terminal-input" type="text" inputmode="text" autocomplete="off" spellcheck="false" aria-label="Interactive terminal command" placeholder="type help and press Enter" /></div>
+              <div class="terminal-row terminal-response" aria-live="polite"></div>
+              <div class="terminal-hint">Commands: help · projects · skills · resume · contact · clear</div>
             </div>
             <div class="system-footer">
               <div class="mini-stat"><b>6+</b><span>Projects</span></div>
@@ -896,13 +1005,13 @@
               <div class="mini-stat"><b>2025</b><span>Graduated</span></div>
             </div>
           </div>
-          <span class="float-chip one">AI + Automation</span>
-          <span class="float-chip two">Security-minded</span>
+          <span class="float-chip one draggable-chip" tabindex="0">AI + Automation</span>
+          <span class="float-chip two draggable-chip" tabindex="0">Security-minded</span>
         </div>
       </div>
     </section>
 
-    <div class="marquee-wrap" aria-hidden="true">
+    <div class="marquee-wrap" role="group" tabindex="0" aria-label="Draggable technology ticker. Drag left or right, or use the arrow keys.">
       <div class="marquee">
         <div class="marquee-track">
           <span>Python</span><span>React</span><span>Node.js</span><span>Cybersecurity</span><span>Local LLMs</span><span>SQLite</span><span>Linux</span><span>REST APIs</span>
@@ -927,7 +1036,7 @@
               <span class="project-number">01 / HEALTHCARE AI</span>
               <h3 class="project-title">Athena<br><span class="serif cyan">Voice Bot</span></h3>
               <p class="project-desc">An AI-powered healthcare patient simulator with six conversation workflows, live voice handling, automated transcripts, quality scoring, analytics, search, filtering, and reporting.</p>
-              <ul class="tech-list" aria-label="Technologies"><li>Python</li><li>Flask</li><li>Gemini</li><li>Twilio</li><li>SQLite</li></ul>
+              <ul class="tech-list" aria-label="Technologies"><li tabindex="0" data-used="Core backend logic, scenario handling, transcript analysis, and testing in Athena.">Python</li><li tabindex="0" data-used="Runs Athena’s dashboard, routes, and REST webhook endpoints.">Flask</li><li tabindex="0" data-used="Generates context-aware patient conversations and automated analysis.">Gemini</li><li tabindex="0" data-used="Handles live voice calls and healthcare conversation workflows.">Twilio</li><li tabindex="0" data-used="Stores calls, transcripts, analytics, warnings, and scenario results.">SQLite</li></ul>
               <div class="project-actions"><a class="project-link hover-target" href="https://github.com/dandrek123/athena-voice-bot" target="_blank" rel="noopener">View on GitHub <span class="circle-arrow">↗</span></a><button class="gallery-link hover-target" type="button" data-gallery="athena">View 3 real screens</button></div>
             </div>
             <div class="project-visual athena-visual">
@@ -948,7 +1057,7 @@
               <span class="project-number">02 / CYBER OPERATIONS</span>
               <h3 class="project-title">Mission<br><span class="serif acid">Shield</span></h3>
               <p class="project-desc">A defense-style readiness dashboard that tracks mission systems, cyber incidents, severity, operational risk, response actions, and live filtering through a React and Express stack.</p>
-              <ul class="tech-list" aria-label="Technologies"><li>React</li><li>Node.js</li><li>Express</li><li>SQLite</li><li>JavaScript</li></ul>
+              <ul class="tech-list" aria-label="Technologies"><li tabindex="0" data-used="Builds MissionShield’s dashboard, forms, filters, and system views.">React</li><li tabindex="0" data-used="Runs the MissionShield server and application logic.">Node.js</li><li tabindex="0" data-used="Provides API routes for systems, incidents, and readiness data.">Express</li><li tabindex="0" data-used="Stores mission systems, incidents, severity, status, and actions.">SQLite</li><li tabindex="0" data-used="Powers dashboard interactions, filtering, forms, and state changes.">JavaScript</li></ul>
               <div class="project-actions"><a class="project-link hover-target" href="https://github.com/dandrek123/MissionShield" target="_blank" rel="noopener">View on GitHub <span class="circle-arrow">↗</span></a><button class="gallery-link hover-target" type="button" data-gallery="mission">View 2 real screens</button></div>
             </div>
             <div class="project-visual shield-visual">
@@ -969,7 +1078,7 @@
               <span class="project-number">03 / LANGUAGE DESIGN</span>
               <h3 class="project-title">Knight<br><span class="serif" style="color:var(--violet)">Lang</span></h3>
               <p class="project-desc">A custom interpreted programming language designed from scratch in Python, complete with a lexer, parser, abstract syntax tree, interpreter, functions, control flow, strings, and indentation-based blocks.</p>
-              <ul class="tech-list" aria-label="Technologies"><li>Python</li><li>Lexer</li><li>Parser</li><li>AST</li><li>Interpreter</li></ul>
+              <ul class="tech-list" aria-label="Technologies"><li tabindex="0" data-used="Implements the complete KnightLang language toolchain.">Python</li><li tabindex="0" data-used="Turns source code into tokens that KnightLang can understand.">Lexer</li><li tabindex="0" data-used="Converts tokens into valid language structures and expressions.">Parser</li><li tabindex="0" data-used="Represents KnightLang programs as an abstract syntax tree.">AST</li><li tabindex="0" data-used="Executes variables, functions, loops, conditionals, and expressions.">Interpreter</li></ul>
               <div class="project-actions"><a class="project-link hover-target" href="https://github.com/dandrek123/KnightLang" target="_blank" rel="noopener">View on GitHub <span class="circle-arrow">↗</span></a><button class="gallery-link hover-target" type="button" data-gallery="knightlang">View real execution</button></div>
             </div>
             <div class="project-visual lang-visual">
@@ -996,7 +1105,7 @@ warrior <span class="op">=</span> <span class="str">"D'Andre"</span>
               <span class="project-number">04 / PERSONAL AI SYSTEM</span>
               <h3 class="project-title">Super Bit<br><span class="serif cyan">AI</span></h3>
               <p class="project-desc">A private desktop AI assistant with voice interaction, local LLM workflows, memory, reminders, document analysis, bilingual support, automation helpers, secure owner controls, and approval-based actions.</p>
-              <ul class="tech-list" aria-label="Technologies"><li>Python</li><li>Local LLMs</li><li>Voice</li><li>Automation</li><li>Security</li></ul>
+              <ul class="tech-list" aria-label="Technologies"><li tabindex="0" data-used="Coordinates Super Bit’s assistant logic, tools, memory, and workflows.">Python</li><li tabindex="0" data-used="Enables private on-device reasoning and document interaction.">Local LLMs</li><li tabindex="0" data-used="Supports spoken commands and English/Spanish interaction.">Voice</li><li tabindex="0" data-used="Runs browser, desktop, file, coding, and reminder workflows.">Automation</li><li tabindex="0" data-used="Protects owner-only actions, passwords, and approval-based operations.">Security</li></ul>
               <span class="project-link" aria-label="Private local project">Private/local project <span class="circle-arrow">●</span></span>
             </div>
             <div class="project-visual bit-visual" aria-hidden="true">
@@ -1012,7 +1121,7 @@ warrior <span class="op">=</span> <span class="str">"D'Andre"</span>
               <span class="project-number">05 / FULL-STACK DISCOVERY</span>
               <h3 class="project-title">Meal<br><span class="serif" style="color:var(--orange)">Match</span></h3>
               <p class="project-desc">A full-stack meal discovery platform with user registration, authentication, session management, analytics, administrative tools, and a relational database for meals and accounts.</p>
-              <ul class="tech-list" aria-label="Technologies"><li>PHP</li><li>MySQL</li><li>SQL</li><li>HTML/CSS</li><li>Authentication</li></ul>
+              <ul class="tech-list" aria-label="Technologies"><li tabindex="0" data-used="Handles MealMatch pages, sessions, matching logic, and admin tools.">PHP</li><li tabindex="0" data-used="Stores users, meals, ingredients, preferences, and activity.">MySQL</li><li tabindex="0" data-used="Queries and manages the relational meal and user data model.">SQL</li><li tabindex="0" data-used="Creates the responsive discovery, login, and administration interface.">HTML/CSS</li><li tabindex="0" data-used="Protects user accounts with registration, login, and session management.">Authentication</li></ul>
               <div class="project-actions"><a class="project-link hover-target" href="https://github.com/dandrek123/MealMatch" target="_blank" rel="noopener">View on GitHub <span class="circle-arrow">↗</span></a><button class="gallery-link hover-target" type="button" data-gallery="mealmatch">View 3 real screens</button></div>
             </div>
             <div class="project-visual meal-visual"><div class="meal-app"><div class="meal-nav"><div class="meal-logo"><i>✦</i> MealMatch</div><span class="meal-user">DK</span></div><div class="meal-body"><div class="meal-feature"><small>Today’s match</small><h4>Smoky tomato chicken bowl</h4><p>Matched to your saved preferences, available ingredients, and recent activity.</p><div class="plate"></div></div><div class="meal-side"><div class="match-score"><small>MATCH CONFIDENCE</small><b>92%</b><div class="match-bar"></div></div><div class="meal-tags"><strong>Why it fits</strong><span>High protein</span><span>30 min</span><span>Spicy</span><span>Saved</span></div></div></div></div></div></div>
@@ -1023,7 +1132,7 @@ warrior <span class="op">=</span> <span class="str">"D'Andre"</span>
               <span class="project-number">06 / COMMUNITY SECURITY</span>
               <h3 class="project-title">Anti-Scam<br><span class="serif" style="color:var(--danger)">Community</span></h3>
               <p class="project-desc">A secure MERN community application for reporting, reviewing, and discussing online scams through authenticated profiles, comments, moderation tools, voting, and forum-style collaboration.</p>
-              <ul class="tech-list" aria-label="Technologies"><li>MongoDB</li><li>Express</li><li>React</li><li>Node.js</li><li>Authentication</li></ul>
+              <ul class="tech-list" aria-label="Technologies"><li tabindex="0" data-used="Stores scam reports, profiles, comments, tags, and community activity.">MongoDB</li><li tabindex="0" data-used="Provides routes for reports, moderation, comments, and profiles.">Express</li><li tabindex="0" data-used="Builds the forum, report feeds, profile screens, and moderation UI.">React</li><li tabindex="0" data-used="Runs the Anti-Scam server and full-stack application logic.">Node.js</li><li tabindex="0" data-used="Secures accounts, profiles, and protected community actions.">Authentication</li></ul>
               <a class="project-link hover-target" href="https://github.com/dandrek123/Bit_by_Bit" target="_blank" rel="noopener">View on GitHub <span class="circle-arrow">↗</span></a>
             </div>
             <div class="project-visual scam-visual" aria-hidden="true"><div class="scam-app"><div class="scam-head"><div class="scam-brand"><i>!</i> ScamWatch Community</div><span class="verified-pill">COMMUNITY VERIFIED</span></div><div class="scam-layout"><div class="report-feed"><div class="report-card"><div class="report-meta"><span>Marketplace report · 4m</span><span class="risk-pill">HIGH RISK</span></div><h4>Fake delivery payment request</h4><p>Seller redirected the conversation and requested payment through an unprotected external link.</p><div class="vote-row"><span>▲ 128 helpful</span><span>24 comments</span></div></div><div class="report-card"><div class="report-meta"><span>Banking alert · 18m</span><span class="risk-pill">PHISHING</span></div><h4>Account verification text</h4><p>Message imitates a bank login page and pressures the recipient to act immediately.</p><div class="vote-row"><span>▲ 86 helpful</span><span>11 comments</span></div></div></div><aside class="safety-panel"><div class="safety-ring"><b>72</b><small>RISK INDEX</small></div><div class="safety-stat"><span>Reports today</span><b>148</b></div><div class="safety-stat"><span>Resolved</span><b>91%</b></div><div class="safety-stat"><span>Active reviewers</span><b>36</b></div></aside></div></div></div>
@@ -1116,12 +1225,61 @@ warrior <span class="op">=</span> <span class="str">"D'Andre"</span>
       const year = document.getElementById('year');
       if (year) year.textContent = new Date().getFullYear();
 
+      const progressHit = document.querySelector('.scroll-progress-hit');
+      const getScrollMax = () => Math.max(0, root.scrollHeight - innerHeight);
       const updateProgress = () => {
-        const max = root.scrollHeight - innerHeight;
-        progress.style.width = (max > 0 ? (scrollY / max) * 100 : 0) + '%';
+        const max = getScrollMax();
+        const percent = max > 0 ? Math.min(100, Math.max(0, (scrollY / max) * 100)) : 0;
+        progress.style.width = percent + '%';
+        progressHit?.setAttribute('aria-valuenow', String(Math.round(percent)));
       };
       updateProgress();
       addEventListener('scroll', updateProgress, { passive: true });
+      addEventListener('resize', updateProgress, { passive: true });
+
+      // Drag or click the top progress track to move through the page.
+      if (progressHit) {
+        let progressPointer = null;
+        const seekFromPointer = (clientX) => {
+          const rect = progressHit.getBoundingClientRect();
+          const ratio = Math.min(1, Math.max(0, (clientX - rect.left) / rect.width));
+          scrollTo({ top: ratio * getScrollMax(), behavior: 'auto' });
+          updateProgress();
+        };
+        progressHit.addEventListener('pointerdown', (e) => {
+          if (e.button !== undefined && e.button !== 0) return;
+          progressPointer = e.pointerId;
+          progressHit.setPointerCapture?.(e.pointerId);
+          progressHit.classList.add('is-dragging');
+          seekFromPointer(e.clientX);
+          e.preventDefault();
+        });
+        progressHit.addEventListener('pointermove', (e) => {
+          if (progressPointer !== e.pointerId) return;
+          seekFromPointer(e.clientX);
+          e.preventDefault();
+        });
+        const stopProgressDrag = (e) => {
+          if (progressPointer === null || (e?.pointerId !== undefined && e.pointerId !== progressPointer)) return;
+          progressPointer = null;
+          progressHit.classList.remove('is-dragging');
+        };
+        progressHit.addEventListener('pointerup', stopProgressDrag);
+        progressHit.addEventListener('pointercancel', stopProgressDrag);
+        progressHit.addEventListener('lostpointercapture', stopProgressDrag);
+        progressHit.addEventListener('keydown', (e) => {
+          const max = getScrollMax();
+          const step = Math.max(innerHeight * .35, 240);
+          let next = scrollY;
+          if (e.key === 'ArrowRight' || e.key === 'ArrowDown') next += step;
+          else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') next -= step;
+          else if (e.key === 'Home') next = 0;
+          else if (e.key === 'End') next = max;
+          else return;
+          e.preventDefault();
+          scrollTo({ top: Math.min(max, Math.max(0, next)), behavior: reduced ? 'auto' : 'smooth' });
+        });
+      }
 
       const typingEl = document.querySelector('.typing');
       if (typingEl && !reduced) {
@@ -1150,6 +1308,48 @@ warrior <span class="op">=</span> <span class="str">"D'Andre"</span>
       } else if (typingEl) {
         typingEl.textContent = typingEl.dataset.text || 'build something meaningful';
       }
+
+      // Shared availability panel controller used by both the header button and terminal.
+      const availabilityPanel = document.getElementById('availabilityPanel');
+      const availabilityToggle = document.querySelector('.availability-toggle');
+      const setAvailability = (open) => {
+        if (!availabilityPanel || !availabilityToggle) return;
+        availabilityPanel.classList.toggle('is-open', open);
+        availabilityPanel.setAttribute('aria-hidden', String(!open));
+        availabilityToggle.setAttribute('aria-expanded', String(open));
+      };
+      availabilityToggle?.addEventListener('click', (e) => {
+        e.stopPropagation();
+        setAvailability(!availabilityPanel?.classList.contains('is-open'));
+      });
+      availabilityPanel?.addEventListener('click', e => e.stopPropagation());
+      document.addEventListener('click', () => setAvailability(false));
+      document.addEventListener('keydown', e => {
+        if (e.key === 'Escape' && availabilityPanel?.classList.contains('is-open')) {
+          setAvailability(false);
+          availabilityToggle?.focus();
+        }
+      });
+
+      // Tiny working terminal: commands navigate the portfolio or open contact resources.
+      const terminalInput = document.querySelector('.terminal-input');
+      const terminalResponse = document.querySelector('.terminal-response');
+      const terminalSay = (text) => { if (terminalResponse) terminalResponse.textContent = text; };
+      terminalInput?.addEventListener('keydown', e => {
+        if (e.key !== 'Enter') return;
+        const command = terminalInput.value.trim().toLowerCase();
+        terminalInput.value = '';
+        const actions = {
+          help: () => terminalSay('projects → selected work · skills → capabilities · resume → open PDF · contact → email / LinkedIn / résumé · clear → reset'),
+          projects: () => { terminalSay('opening selected work…'); document.querySelector('#work')?.scrollIntoView({behavior:'smooth'}); },
+          skills: () => { terminalSay('opening capabilities…'); document.querySelector('#skills')?.scrollIntoView({behavior:'smooth'}); },
+          resume: () => { terminalSay('opening résumé…'); window.open('DAndre_Knight_Resume.pdf','_blank','noopener'); },
+          contact: () => { terminalSay('contact panel opened — choose email, LinkedIn, or résumé'); setAvailability(true); availabilityPanel?.querySelector('a')?.focus(); },
+          clear: () => terminalSay('')
+        };
+        if (actions[command]) actions[command]();
+        else terminalSay(command ? `command not found: ${command}. Try help.` : '');
+      });
 
       // Content stays visible without JavaScript. Animations are applied only as elements enter view.
       if (!reduced && 'IntersectionObserver' in window) {
@@ -1192,6 +1392,14 @@ warrior <span class="op">=</span> <span class="str">"D'Andre"</span>
           el.addEventListener('mouseleave', () => cursor.classList.remove('is-hover'));
         });
 
+        document.querySelectorAll('.project-card').forEach(card => {
+          card.addEventListener('pointermove', e => {
+            const r = card.getBoundingClientRect();
+            card.style.setProperty('--spot-x', `${e.clientX-r.left}px`);
+            card.style.setProperty('--spot-y', `${e.clientY-r.top}px`);
+          });
+        });
+
         document.querySelectorAll('.magnetic').forEach(el => {
           el.addEventListener('pointermove', e => {
             const r = el.getBoundingClientRect();
@@ -1212,6 +1420,185 @@ warrior <span class="op">=</span> <span class="str">"D'Andre"</span>
           card.addEventListener('pointerleave', () => { card.style.transform = ''; });
         });
       }
+
+
+      // Draggable skills ticker with momentum. It resumes its steady leftward motion after release.
+      const marqueeWrap = document.querySelector('.marquee-wrap');
+      const marquee = document.querySelector('.marquee');
+      if (marqueeWrap && marquee && !reduced) {
+        let offset = 0;
+        let velocity = -0.55;
+        let dragging = false;
+        let pointerId = null;
+        let lastX = 0;
+        let lastTime = performance.now();
+        let halfWidth = 0;
+
+        const measureMarquee = () => { halfWidth = marquee.scrollWidth / 2; };
+        measureMarquee();
+        addEventListener('resize', measureMarquee, { passive: true });
+
+        const normalize = () => {
+          if (!halfWidth) return;
+          while (offset <= -halfWidth) offset += halfWidth;
+          while (offset > 0) offset -= halfWidth;
+        };
+
+        const animateMarquee = (now) => {
+          const dt = Math.min(32, now - lastTime);
+          lastTime = now;
+          if (!dragging) {
+            offset += velocity * (dt / 16.667);
+            velocity += (-0.55 - velocity) * 0.025;
+          }
+          normalize();
+          marquee.style.transform = `translate3d(${offset}px,0,0)`;
+          requestAnimationFrame(animateMarquee);
+        };
+        requestAnimationFrame(animateMarquee);
+
+        marqueeWrap.addEventListener('pointerdown', (e) => {
+          dragging = true; pointerId = e.pointerId; lastX = e.clientX; velocity = 0;
+          marqueeWrap.classList.add('is-dragging');
+          marqueeWrap.setPointerCapture(e.pointerId);
+        });
+        marqueeWrap.addEventListener('pointermove', (e) => {
+          if (!dragging || e.pointerId !== pointerId) return;
+          const dx = e.clientX - lastX;
+          lastX = e.clientX;
+          offset += dx;
+          velocity = dx * 0.9;
+          normalize();
+        });
+        const releaseTicker = (e) => {
+          if (!dragging || (e && e.pointerId !== pointerId)) return;
+          dragging = false; pointerId = null;
+          marqueeWrap.classList.remove('is-dragging');
+        };
+        marqueeWrap.addEventListener('pointerup', releaseTicker);
+        marqueeWrap.addEventListener('pointercancel', releaseTicker);
+        marqueeWrap.addEventListener('lostpointercapture', releaseTicker);
+        marqueeWrap.addEventListener('keydown', (e) => {
+          if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
+          e.preventDefault();
+          offset += e.key === 'ArrowLeft' ? -72 : 72;
+          velocity = e.key === 'ArrowLeft' ? -2.4 : 2.4;
+          normalize();
+        });
+      }
+
+      // Grab-and-release orbit dot. While held, use viewport coordinates so the
+      // rotation of the orbit container cannot mirror or offset pointer movement.
+      const orbital = document.querySelector('.orbital');
+      const orbitDot = document.querySelector('.orbit-dot');
+      if (orbital && orbitDot && !reduced) {
+        let draggingDot = false;
+        let dotPointer = null;
+        let savedNextSibling = null;
+
+        const placeAtPointer = (clientX, clientY) => {
+          orbitDot.style.left = `${clientX}px`;
+          orbitDot.style.top = `${clientY}px`;
+        };
+
+        const getHomeCenter = () => {
+          const probe = document.createElement('i');
+          probe.className = 'orbit-dot';
+          probe.style.pointerEvents = 'none';
+          probe.style.opacity = '0';
+          probe.style.transition = 'none';
+          orbital.appendChild(probe);
+          const rect = probe.getBoundingClientRect();
+          probe.remove();
+          return { x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 };
+        };
+
+        orbitDot.addEventListener('pointerdown', (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          draggingDot = true;
+          dotPointer = e.pointerId;
+          orbital.classList.add('is-grabbing');
+          orbitDot.classList.add('is-dragging');
+          savedNextSibling = orbitDot.nextSibling;
+
+          const rect = orbitDot.getBoundingClientRect();
+          document.body.appendChild(orbitDot);
+          orbitDot.style.position = 'fixed';
+          orbitDot.style.zIndex = '9999';
+          orbitDot.style.margin = '0';
+          orbitDot.style.left = `${rect.left + rect.width / 2}px`;
+          orbitDot.style.top = `${rect.top + rect.height / 2}px`;
+          orbitDot.style.transform = 'translate(-50%, -50%) scale(1.45)';
+          orbitDot.style.transition = 'transform .15s, box-shadow .15s';
+          orbitDot.setPointerCapture(e.pointerId);
+          placeAtPointer(e.clientX, e.clientY);
+        });
+
+        orbitDot.addEventListener('pointermove', (e) => {
+          if (!draggingDot || e.pointerId !== dotPointer) return;
+          placeAtPointer(e.clientX, e.clientY);
+        });
+
+        const releaseOrbitDot = (e) => {
+          if (!draggingDot || (e && e.pointerId !== dotPointer)) return;
+          draggingDot = false;
+          dotPointer = null;
+          const home = getHomeCenter();
+          orbitDot.style.transition = 'left .65s var(--ease), top .65s var(--ease), transform .2s var(--ease), box-shadow .2s';
+          orbitDot.style.left = `${home.x}px`;
+          orbitDot.style.top = `${home.y}px`;
+          orbitDot.style.transform = 'translate(-50%, -50%) scale(1)';
+          orbitDot.classList.remove('is-dragging');
+
+          setTimeout(() => {
+            if (savedNextSibling && savedNextSibling.parentNode === orbital) {
+              orbital.insertBefore(orbitDot, savedNextSibling);
+            } else {
+              orbital.appendChild(orbitDot);
+            }
+            orbitDot.removeAttribute('style');
+            orbital.classList.remove('is-grabbing');
+          }, 660);
+        };
+
+        orbitDot.addEventListener('pointerup', releaseOrbitDot);
+        orbitDot.addEventListener('pointercancel', releaseOrbitDot);
+        orbitDot.addEventListener('lostpointercapture', releaseOrbitDot);
+        orbitDot.addEventListener('keydown', (e) => {
+          if (e.key !== 'Enter' && e.key !== ' ') return;
+          e.preventDefault();
+          orbitDot.animate(
+            [
+              { transform: 'scale(1)' },
+              { transform: 'translate(55px, 34px) scale(1.45)' },
+              { transform: 'scale(1)' }
+            ],
+            { duration: 900, easing: 'cubic-bezier(.2,.8,.2,1)' }
+          );
+        });
+      }
+
+      // Floating labels can be grabbed, then spring back to their authored positions.
+      document.querySelectorAll('.draggable-chip').forEach(chip => {
+        let active = false, pid = null, startX = 0, startY = 0, dx = 0, dy = 0;
+        chip.addEventListener('pointerdown', e => {
+          active = true; pid = e.pointerId; startX = e.clientX - dx; startY = e.clientY - dy;
+          chip.classList.add('is-dragging'); chip.setPointerCapture(e.pointerId); e.preventDefault();
+        });
+        chip.addEventListener('pointermove', e => {
+          if (!active || e.pointerId !== pid) return;
+          dx = e.clientX - startX; dy = e.clientY - startY;
+          chip.style.transform = `translate3d(${dx}px,${dy}px,0)`;
+        });
+        const release = e => {
+          if (!active || (e && e.pointerId !== pid)) return;
+          active = false; pid = null; chip.classList.remove('is-dragging');
+          chip.animate([{transform:`translate3d(${dx}px,${dy}px,0)`},{transform:'translate3d(0,0,0)'}],{duration:650,easing:'cubic-bezier(.2,.8,.2,1)'});
+          dx = dy = 0; chip.style.transform = '';
+        };
+        chip.addEventListener('pointerup', release); chip.addEventListener('pointercancel', release); chip.addEventListener('lostpointercapture', release);
+      });
 
       const footerPanel = document.querySelector('.footer-panel');
       footerPanel?.addEventListener('pointermove', e => {
@@ -1271,6 +1658,35 @@ warrior <span class="op">=</span> <span class="str">"D'Andre"</span>
       document.querySelector('.gallery-close')?.addEventListener('click', closeGallery);
       document.querySelector('.gallery-prev')?.addEventListener('click', () => { const n=galleries[activeGallery].images.length; activeIndex=(activeIndex-1+n)%n; renderGallery(); });
       document.querySelector('.gallery-next')?.addEventListener('click', () => { const n=galleries[activeGallery].images.length; activeIndex=(activeIndex+1)%n; renderGallery(); });
+      // Swipe or drag the gallery image to move between real screens.
+      const galleryStage = document.querySelector('.gallery-stage');
+      let galleryDrag = false, galleryPid = null, galleryStartX = 0, galleryDx = 0;
+      galleryStage?.addEventListener('pointerdown', e => {
+        if (!activeGallery || galleries[activeGallery].images.length < 2) return;
+        galleryDrag = true; galleryPid = e.pointerId; galleryStartX = e.clientX; galleryDx = 0;
+        galleryStage.classList.add('is-dragging'); galleryStage.setPointerCapture(e.pointerId);
+      });
+      galleryStage?.addEventListener('pointermove', e => {
+        if (!galleryDrag || e.pointerId !== galleryPid) return;
+        galleryDx = e.clientX - galleryStartX;
+        galleryImage.style.transform = `translateX(${galleryDx * .35}px) rotate(${galleryDx * .01}deg)`;
+        galleryImage.style.opacity = String(Math.max(.55, 1-Math.abs(galleryDx)/700));
+      });
+      const endGalleryDrag = e => {
+        if (!galleryDrag || (e && e.pointerId !== galleryPid)) return;
+        galleryDrag = false; galleryPid = null; galleryStage.classList.remove('is-dragging');
+        const threshold = Math.min(120, galleryStage.clientWidth * .16);
+        if (Math.abs(galleryDx) > threshold) {
+          const n = galleries[activeGallery].images.length;
+          activeIndex = galleryDx < 0 ? (activeIndex+1)%n : (activeIndex-1+n)%n;
+          renderGallery();
+        }
+        galleryImage.style.transform = ''; galleryImage.style.opacity = ''; galleryDx = 0;
+      };
+      galleryStage?.addEventListener('pointerup', endGalleryDrag);
+      galleryStage?.addEventListener('pointercancel', endGalleryDrag);
+      galleryStage?.addEventListener('lostpointercapture', endGalleryDrag);
+
       gallery?.addEventListener('click', e => { if (e.target === gallery) closeGallery(); });
       addEventListener('keydown', e => {
         if (!gallery || gallery.hidden) return;
