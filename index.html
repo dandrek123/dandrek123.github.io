@@ -1053,7 +1053,7 @@
     <div class="availability-grid">
       <a href="#contact" data-email-link><span>Email me</span><span>↗</span></a>
       <a href="https://www.linkedin.com/in/d%E2%80%99andre-knight-358836251" target="_blank" rel="noopener noreferrer"><span>LinkedIn</span><span>↗</span></a>
-      <a href="DAndre_Knight_Resume.pdf" target="_blank" rel="noopener noreferrer"><span>View résumé</span><span>↗</span></a>
+      <a href="DAndre_Knight_R.pdf" target="_blank" rel="noopener noreferrer"><span>View résumé</span><span>↗</span></a>
       <button class="safety-toggle" type="button"><span>Recruiter safety</span><span>✓</span></button>
     </div>
   </aside>
@@ -1133,7 +1133,7 @@
               Explore selected work
               <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </a>
-            <a class="button magnetic hover-target" href="DAndre_Knight_Resume.pdf" target="_blank" rel="noopener noreferrer">
+            <a class="button magnetic hover-target" href="DAndre_Knight_R.pdf" target="_blank" rel="noopener noreferrer">
               View résumé
               <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4-4m-4 4-4-4M5 21h14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </a>
@@ -1363,7 +1363,7 @@ warrior <span class="op">=</span> <span class="str">"D'Andre"</span>
         <div class="footer-links">
           <a class="hover-target" href="https://github.com/dandrek123" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
           <a class="hover-target" href="https://www.linkedin.com/in/d%E2%80%99andre-knight-358836251" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn profile: www.linkedin.com/in/d’andre-knight-358836251">LinkedIn ↗</a>
-          <a class="hover-target" href="DAndre_Knight_Resume.pdf" target="_blank" rel="noopener noreferrer">Résumé ↗</a>
+          <a class="hover-target" href="DAndre_Knight_R.pdf" target="_blank" rel="noopener noreferrer">Résumé ↗</a>
           <button class="safety-toggle" type="button">Recruiter safety ✓</button>
         </div>
       </div>
@@ -1520,7 +1520,7 @@ warrior <span class="op">=</span> <span class="str">"D'Andre"</span>
           help: () => terminalSay('projects → selected work · skills → capabilities · resume → open PDF · contact → official contact options · safety → scam warning and verified channels · clear → reset'),
           projects: () => { terminalSay('opening selected work…'); document.querySelector('#work')?.scrollIntoView({behavior:'smooth'}); },
           skills: () => { terminalSay('opening capabilities…'); document.querySelector('#skills')?.scrollIntoView({behavior:'smooth'}); },
-          resume: () => { terminalSay('opening résumé…'); window.open('DAndre_Knight_Resume.pdf','_blank','noopener'); },
+          resume: () => { terminalSay('opening résumé…'); window.open('DAndre_Knight_R.pdf','_blank','noopener'); },
           contact: () => { terminalSay('contact panel opened — choose email, LinkedIn, résumé, or recruiter safety'); setAvailability(true); availabilityPanel?.querySelector('a')?.focus(); },
           safety: () => { terminalSay('opening verified channels and scam warning…'); document.querySelector('.safety-toggle')?.click(); },
           clear: () => terminalSay('')
@@ -1991,32 +1991,32 @@ warrior <span class="op">=</span> <span class="str">"D'Andre"</span>
         const q = normalizeQuestion(raw);
         const result = (text, actions=[]) => ({ text, actions });
         if (!q) return result("Please enter a question about D'Andre's professional background.");
-        if (includesAny(q, ['phone','number','address','home address','private','password','secret','api key'])) return result("I do not provide private or sensitive information. Recruiters can use the verified email, LinkedIn, résumé, and GitHub links on this portfolio.", [action('View résumé','DAndre_Knight_Resume.pdf'), action('LinkedIn','https://www.linkedin.com/in/d%E2%80%99andre-knight-358836251')]);
-        if (includesAny(q, ['why should we interview','why interview','why hire','good candidate','worth interviewing'])) return result(recruiterKnowledge.interview, [action('View résumé','DAndre_Knight_Resume.pdf'), action('Explore projects','#work',false), action('Contact D\'Andre','#contact',false)]);
-        if (includesAny(q, ['which role fits','best role','best fit','role fit','position fits'])) return result(recruiterKnowledge.bestfit, [action('View résumé','DAndre_Knight_Resume.pdf'), action('See skills','#skills',false)]);
+        if (includesAny(q, ['phone','number','address','home address','private','password','secret','api key'])) return result("I do not provide private or sensitive information. Recruiters can use the verified email, LinkedIn, résumé, and GitHub links on this portfolio.", [action('View résumé','DAndre_Knight_R.pdf'), action('LinkedIn','https://www.linkedin.com/in/d%E2%80%99andre-knight-358836251')]);
+        if (includesAny(q, ['why should we interview','why interview','why hire','good candidate','worth interviewing'])) return result(recruiterKnowledge.interview, [action('View résumé','DAndre_Knight_R.pdf'), action('Explore projects','#work',false), action('Contact D\'Andre','#contact',false)]);
+        if (includesAny(q, ['which role fits','best role','best fit','role fit','position fits'])) return result(recruiterKnowledge.bestfit, [action('View résumé','DAndre_Knight_R.pdf'), action('See skills','#skills',false)]);
         if (includesAny(q, ['mission shield','missionshield','cyber readiness','readiness dashboard'])) return result(recruiterKnowledge.missionshield, [action('View GitHub','https://github.com/dandrek123/MissionShield'), action('See project','#work',false)]);
         if (includesAny(q, ['athena','voice bot','healthcare','twilio','gemini'])) return result(recruiterKnowledge.athena, [action('View GitHub','https://github.com/dandrek123/athena-voice-bot'), action('See project','#work',false)]);
         if (includesAny(q, ['knightlang','programming language','lexer','parser','interpreter','ast'])) return result(recruiterKnowledge.knightlang, [action('View GitHub','https://github.com/dandrek123/KnightLang'), action('See project','#work',false)]);
         if (includesAny(q, ['meal match','mealmatch','php','mysql','meal'])) return result(recruiterKnowledge.mealmatch, [action('View GitHub','https://github.com/dandrek123/MealMatch'), action('See project','#work',false)]);
-        if (includesAny(q, ['super bit','superbit','desktop assistant','local llm'])) return result(recruiterKnowledge.superbit, [action('View résumé','DAndre_Knight_Resume.pdf')]);
+        if (includesAny(q, ['super bit','superbit','desktop assistant','local llm'])) return result(recruiterKnowledge.superbit, [action('View résumé','DAndre_Knight_R.pdf')]);
         if (includesAny(q, ['anti scam','antiscam','bit by bit','mern','scam app'])) return result(recruiterKnowledge.antiscam, [action('View GitHub','https://github.com/dandrek123/Bit_by_Bit'), action('See project','#work',false)]);
         if (includesAny(q, ['python'])) return result(recruiterKnowledge.python, [action('Athena','https://github.com/dandrek123/athena-voice-bot'), action('KnightLang','https://github.com/dandrek123/KnightLang')]);
         if (includesAny(q, ['javascript','react','node','express','front end','frontend','full stack'])) return result(recruiterKnowledge.javascript, [action('MissionShield','https://github.com/dandrek123/MissionShield'), action('Anti-Scam','https://github.com/dandrek123/Bit_by_Bit')]);
-        if (includesAny(q, ['strongest','strength','stand out','differentiat'])) return result(recruiterKnowledge.strengths, [action('Explore projects','#work',false), action('View résumé','DAndre_Knight_Resume.pdf')]);
+        if (includesAny(q, ['strongest','strength','stand out','differentiat'])) return result(recruiterKnowledge.strengths, [action('Explore projects','#work',false), action('View résumé','DAndre_Knight_R.pdf')]);
         if (includesAny(q, ['skill','technology','tech stack','languages does','what does he know'])) return result(recruiterKnowledge.skills, [action('See skills','#skills',false), action('View GitHub','https://github.com/dandrek123')]);
-        if (includesAny(q, ['education','degree','graduate','graduat','university','fsu','coursework'])) return result(recruiterKnowledge.education, [action('View résumé','DAndre_Knight_Resume.pdf')]);
-        if (includesAny(q, ['certificate','certification','google it'])) return result(recruiterKnowledge.certification, [action('View résumé','DAndre_Knight_Resume.pdf')]);
-        if (includesAny(q, ['honor','president list','dean list'])) return result(recruiterKnowledge.honors, [action('View résumé','DAndre_Knight_Resume.pdf')]);
-        if (includesAny(q, ['citizen','citizenship','clearance','security clearance','work authorization','sponsor'])) return result(recruiterKnowledge.citizenship, [action('View résumé','DAndre_Knight_Resume.pdf')]);
+        if (includesAny(q, ['education','degree','graduate','graduat','university','fsu','coursework'])) return result(recruiterKnowledge.education, [action('View résumé','DAndre_Knight_R.pdf')]);
+        if (includesAny(q, ['certificate','certification','google it'])) return result(recruiterKnowledge.certification, [action('View résumé','DAndre_Knight_R.pdf')]);
+        if (includesAny(q, ['honor','president list','dean list'])) return result(recruiterKnowledge.honors, [action('View résumé','DAndre_Knight_R.pdf')]);
+        if (includesAny(q, ['citizen','citizenship','clearance','security clearance','work authorization','sponsor'])) return result(recruiterKnowledge.citizenship, [action('View résumé','DAndre_Knight_R.pdf')]);
         if (includesAny(q, ['where','location','based','relocate','remote','hybrid'])) return result(recruiterKnowledge.location, [action('Contact D\'Andre','#contact',false)]);
-        if (includesAny(q, ['role','job','position','seeking','looking for','opportunit','junior','entry level'])) return result(recruiterKnowledge.roles + ' ' + recruiterKnowledge.availability, [action('View résumé','DAndre_Knight_Resume.pdf'), action('Contact D\'Andre','#contact',false)]);
-        if (includesAny(q, ['experience','professional experience','job shadow','arpia'])) return result(recruiterKnowledge.experience, [action('View résumé','DAndre_Knight_Resume.pdf')]);
+        if (includesAny(q, ['role','job','position','seeking','looking for','opportunit','junior','entry level'])) return result(recruiterKnowledge.roles + ' ' + recruiterKnowledge.availability, [action('View résumé','DAndre_Knight_R.pdf'), action('Contact D\'Andre','#contact',false)]);
+        if (includesAny(q, ['experience','professional experience','job shadow','arpia'])) return result(recruiterKnowledge.experience, [action('View résumé','DAndre_Knight_R.pdf')]);
         if (includesAny(q, ['project','portfolio','built','work'])) return result(recruiterKnowledge.projects, [action('Explore projects','#work',false), action('View GitHub','https://github.com/dandrek123')]);
-        if (includesAny(q, ['contact','email','linkedin','reach','hire'])) return result(recruiterKnowledge.contact, [action('Email D\'Andre','#contact',false), action('LinkedIn','https://www.linkedin.com/in/d%E2%80%99andre-knight-358836251'), action('View résumé','DAndre_Knight_Resume.pdf')]);
+        if (includesAny(q, ['contact','email','linkedin','reach','hire'])) return result(recruiterKnowledge.contact, [action('Email D\'Andre','#contact',false), action('LinkedIn','https://www.linkedin.com/in/d%E2%80%99andre-knight-358836251'), action('View résumé','DAndre_Knight_R.pdf')]);
         if (includesAny(q, ['github','repository','repo','source code'])) return result(recruiterKnowledge.github, [action('Open GitHub','https://github.com/dandrek123')]);
-        if (includesAny(q, ['spanish','english','bilingual','language'])) return result(recruiterKnowledge.languages, [action('View résumé','DAndre_Knight_Resume.pdf')]);
-        if (includesAny(q, ['who is','tell me about dandre','summary','overview','background'])) return result(recruiterKnowledge.summary, [action('View résumé','DAndre_Knight_Resume.pdf'), action('Explore projects','#work',false)]);
-        return result("I don't have verified information for that question. Try asking about D'Andre's skills, projects, education, experience, citizenship, relocation, or the roles he is seeking.", [action('View résumé','DAndre_Knight_Resume.pdf'), action('Explore projects','#work',false)]);
+        if (includesAny(q, ['spanish','english','bilingual','language'])) return result(recruiterKnowledge.languages, [action('View résumé','DAndre_Knight_R.pdf')]);
+        if (includesAny(q, ['who is','tell me about dandre','summary','overview','background'])) return result(recruiterKnowledge.summary, [action('View résumé','DAndre_Knight_R.pdf'), action('Explore projects','#work',false)]);
+        return result("I don't have verified information for that question. Try asking about D'Andre's skills, projects, education, experience, citizenship, relocation, or the roles he is seeking.", [action('View résumé','DAndre_Knight_R.pdf'), action('Explore projects','#work',false)]);
       };
 
       const setAssistant = open => {
