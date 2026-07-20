@@ -2497,6 +2497,20 @@ warrior <span class="op">=</span> <span class="str">"D'Andre"</span>
         if (includesAny(q, ['certificate','certification','google it'])) return result(recruiterKnowledge.certification, [action('View résumé','DAndre_Knight_R.pdf')]);
         if (includesAny(q, ['honor','president list','dean list'])) return result(recruiterKnowledge.honors, [action('View résumé','DAndre_Knight_R.pdf')]);
         if (includesAny(q, ['citizen','citizenship','clearance','security clearance','work authorization','sponsor'])) return result(recruiterKnowledge.citizenship, [action('View résumé','DAndre_Knight_R.pdf')]);
+
+        if (includesAny(q, [
+          'available','availability','available for work','currently available',
+          'when can he start','when is he available','start date','starting date',
+          'how soon can he start','ready to start','open to work','open for work',
+          'full time availability','part time availability'
+        ])) {
+          return result(
+            "D'Andre is currently open to entry-level and junior opportunities in software engineering, AI, IT, systems engineering, and cybersecurity. He is open to remote, hybrid, and relocation opportunities. A specific start date is not listed, so recruiters should contact him directly to confirm timing.",
+            [action('Contact D\'Andre','#contact',false), action('View résumé','DAndre_Knight_R.pdf')],
+            'roles'
+          );
+        }
+
         if (includesAny(q, ['where','location','based','relocate','remote','hybrid'])) return result(recruiterKnowledge.location, [action('Contact D\'Andre','#contact',false)]);
         if (includesAny(q, ['role','job','position','seeking','looking for','opportunit','junior','entry level'])) return result(recruiterKnowledge.roles + ' ' + recruiterKnowledge.availability, [action('View résumé','DAndre_Knight_R.pdf'), action('Contact D\'Andre','#contact',false)], 'roles');
         if (includesAny(q, ['experience','professional experience','job shadow','arpia'])) return result(recruiterKnowledge.experience, [action('View résumé','DAndre_Knight_R.pdf')], 'experience');
