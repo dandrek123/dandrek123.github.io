@@ -723,6 +723,288 @@
     .honors { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 22px; }
     .honors span { padding: 8px 11px; border: 1px solid var(--line); border-radius: 999px; color: #c6c6ce; font-size: .7rem; }
 
+
+    /* Portfolio feedback */
+    .feedback-section {
+      padding-top: 92px;
+      padding-bottom: 62px;
+    }
+    .feedback-card {
+      position: relative;
+      display: grid;
+      grid-template-columns: minmax(0, .88fr) minmax(420px, 1.12fr);
+      gap: clamp(28px, 5vw, 70px);
+      padding: clamp(28px, 5vw, 62px);
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 38px;
+      background:
+        radial-gradient(circle at 8% 15%, rgba(185,255,57,.12), transparent 19rem),
+        radial-gradient(circle at 92% 86%, rgba(104,228,255,.09), transparent 22rem),
+        linear-gradient(145deg, rgba(17,20,27,.94), rgba(8,10,15,.96));
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.045), 0 32px 90px rgba(0,0,0,.22);
+    }
+    .feedback-card::after {
+      content: "FEEDBACK";
+      position: absolute;
+      right: -12px;
+      top: -48px;
+      color: transparent;
+      -webkit-text-stroke: 1px rgba(255,255,255,.035);
+      font-size: clamp(5rem, 13vw, 11rem);
+      font-weight: 950;
+      letter-spacing: -.08em;
+      pointer-events: none;
+    }
+    .feedback-intro,
+    .feedback-form {
+      position: relative;
+      z-index: 1;
+      min-width: 0;
+    }
+    .feedback-bit {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 30px;
+    }
+    .feedback-bit .knight-orb {
+      --orb-size: 62px;
+      flex: 0 0 auto;
+    }
+    .feedback-bit-copy strong {
+      display: block;
+      font-size: .92rem;
+      letter-spacing: -.02em;
+    }
+    .feedback-bit-copy span {
+      display: block;
+      margin-top: 2px;
+      color: var(--muted);
+      font-size: .72rem;
+    }
+    .feedback-title {
+      margin: 0;
+      max-width: 620px;
+      font-size: clamp(2.8rem, 5.9vw, 6.1rem);
+      line-height: .9;
+      letter-spacing: -.065em;
+    }
+    .feedback-copy {
+      max-width: 570px;
+      margin: 24px 0 0;
+      color: var(--muted);
+      font-size: 1rem;
+      line-height: 1.7;
+    }
+    .feedback-reactions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 9px;
+      margin-top: 30px;
+    }
+    .feedback-reaction {
+      appearance: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 42px;
+      padding: 0 14px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      color: #c9cad2;
+      background: rgba(255,255,255,.035);
+      font: inherit;
+      font-size: .75rem;
+      font-weight: 800;
+      cursor: pointer;
+      transition: transform .22s var(--ease), color .22s, background .22s, border-color .22s;
+    }
+    .feedback-reaction:hover {
+      transform: translateY(-2px);
+      color: var(--text);
+      border-color: var(--line-strong);
+    }
+    .feedback-reaction[aria-pressed="true"] {
+      color: #071000;
+      background: var(--acid);
+      border-color: var(--acid);
+      box-shadow: 0 0 24px rgba(185,255,57,.18);
+    }
+    .feedback-form {
+      display: grid;
+      gap: 14px;
+      padding: clamp(20px, 3vw, 30px);
+      border: 1px solid var(--line);
+      border-radius: 28px;
+      background: rgba(7,9,14,.72);
+      backdrop-filter: blur(18px);
+    }
+    .feedback-form-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      gap: 16px;
+      margin-bottom: 2px;
+    }
+    .feedback-form-head h3 {
+      margin: 0;
+      font-size: 1.3rem;
+      letter-spacing: -.035em;
+    }
+    .feedback-form-head span {
+      color: var(--faint);
+      font-size: .68rem;
+      white-space: nowrap;
+    }
+    .feedback-rating {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 13px 14px;
+      border: 1px solid var(--line);
+      border-radius: 17px;
+      background: rgba(255,255,255,.025);
+    }
+    .feedback-rating-label {
+      color: #c7c8d0;
+      font-size: .76rem;
+      font-weight: 800;
+    }
+    .feedback-stars {
+      display: flex;
+      flex-direction: row-reverse;
+      justify-content: flex-end;
+      gap: 3px;
+    }
+    .feedback-star {
+      appearance: none;
+      width: 31px;
+      height: 31px;
+      padding: 0;
+      border: 0;
+      color: #4d505b;
+      background: transparent;
+      font-size: 1.28rem;
+      line-height: 1;
+      cursor: pointer;
+      transition: color .18s, transform .18s;
+    }
+    .feedback-star:hover,
+    .feedback-star:hover ~ .feedback-star,
+    .feedback-star.is-selected,
+    .feedback-star.is-selected ~ .feedback-star {
+      color: #fff06d;
+      text-shadow: 0 0 14px rgba(255,240,109,.3);
+    }
+    .feedback-star:hover { transform: scale(1.12); }
+    .feedback-fields {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0,1fr));
+      gap: 11px;
+    }
+    .feedback-field {
+      display: grid;
+      gap: 7px;
+      min-width: 0;
+    }
+    .feedback-field.full { grid-column: 1 / -1; }
+    .feedback-field label {
+      color: #c2c3cb;
+      font-size: .69rem;
+      font-weight: 800;
+      letter-spacing: .02em;
+    }
+    .feedback-field input,
+    .feedback-field textarea {
+      width: 100%;
+      min-width: 0;
+      border: 1px solid var(--line);
+      border-radius: 15px;
+      color: var(--text);
+      background: rgba(255,255,255,.035);
+      outline: none;
+      font: inherit;
+      font-size: .8rem;
+      transition: border-color .2s, box-shadow .2s, background .2s;
+    }
+    .feedback-field input {
+      height: 47px;
+      padding: 0 13px;
+    }
+    .feedback-field textarea {
+      min-height: 122px;
+      padding: 12px 13px;
+      resize: vertical;
+      line-height: 1.55;
+    }
+    .feedback-field input:focus,
+    .feedback-field textarea:focus {
+      border-color: rgba(185,255,57,.55);
+      background: rgba(255,255,255,.05);
+      box-shadow: 0 0 0 3px rgba(185,255,57,.075);
+    }
+    .feedback-submit-row {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+      margin-top: 2px;
+    }
+    .feedback-submit {
+      appearance: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      min-height: 50px;
+      padding: 0 18px;
+      border: 1px solid var(--acid);
+      border-radius: 999px;
+      color: #071000;
+      background: var(--acid);
+      font: inherit;
+      font-size: .78rem;
+      font-weight: 900;
+      cursor: pointer;
+      transition: transform .22s var(--ease), background .22s, border-color .22s;
+    }
+    .feedback-submit:hover {
+      transform: translateY(-2px);
+      background: var(--text);
+      border-color: var(--text);
+    }
+    .feedback-privacy {
+      margin: 0;
+      color: var(--faint);
+      font-size: .63rem;
+      line-height: 1.45;
+    }
+    .feedback-status {
+      min-height: 20px;
+      margin: 0;
+      color: #baffd1;
+      font-size: .69rem;
+      font-weight: 750;
+    }
+    .feedback-status.is-error { color: #ffc3ce; }
+
+    @media (max-width: 980px) {
+      .feedback-card { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 680px) {
+      .feedback-section { padding-top: 48px; }
+      .feedback-card { padding: 24px 18px; border-radius: 28px; }
+      .feedback-title { font-size: clamp(2.7rem, 14vw, 4.8rem); }
+      .feedback-form { padding: 18px 14px; border-radius: 22px; }
+      .feedback-fields { grid-template-columns: 1fr; }
+      .feedback-field.full { grid-column: auto; }
+      .feedback-form-head { align-items: flex-start; flex-direction: column; gap: 3px; }
+      .feedback-rating { align-items: flex-start; flex-direction: column; }
+      .feedback-submit-row { align-items: flex-start; flex-direction: column; }
+      .feedback-submit { width: 100%; }
+    }
+
     .footer { padding: 110px 0 26px; overflow: hidden; }
     .footer-panel {
       position: relative;
@@ -1740,6 +2022,77 @@ warrior <span class="op">=</span> <span class="str">"D'Andre"</span>
           <button class="safety-toggle" type="button">Recruiter safety ✓</button>
         </div>
       </div>
+
+      <section class="section feedback-section" id="feedback">
+              <div class="feedback-card reveal">
+                <div class="feedback-intro">
+                  <div class="feedback-bit">
+                    <span class="knight-orb" aria-hidden="true">
+                      <span class="knight-orb-ring"></span>
+                      <span class="knight-orb-core"></span>
+                    </span>
+                    <div class="feedback-bit-copy">
+                      <strong>Bit has one last question</strong>
+                      <span>Your perspective helps improve this portfolio.</span>
+                    </div>
+                  </div>
+                  <p class="section-kicker">Before you go</p>
+                  <h2 class="feedback-title">What was your <span class="serif acid">impression?</span></h2>
+                  <p class="feedback-copy">Choose a quick reaction or leave a short note. Feedback from recruiters, developers, and other visitors helps D'Andre improve how his work is presented.</p>
+
+                  <div class="feedback-reactions" aria-label="Quick feedback">
+                    <button class="feedback-reaction" type="button" aria-pressed="false" data-feedback-reaction="Impressive portfolio"><span aria-hidden="true">✦</span> Impressive</button>
+                    <button class="feedback-reaction" type="button" aria-pressed="false" data-feedback-reaction="I would interview D'Andre"><span aria-hidden="true">💼</span> I'd interview D'Andre</button>
+                    <button class="feedback-reaction" type="button" aria-pressed="false" data-feedback-reaction="Interesting projects"><span aria-hidden="true">⌘</span> Interesting projects</button>
+                    <button class="feedback-reaction" type="button" aria-pressed="false" data-feedback-reaction="Easy to navigate"><span aria-hidden="true">↗</span> Easy to navigate</button>
+                  </div>
+                </div>
+
+                <form class="feedback-form" id="portfolioFeedbackForm">
+                  <div class="feedback-form-head">
+                    <h3>Leave optional feedback</h3>
+                    <span>About one minute</span>
+                  </div>
+
+                  <div class="feedback-rating">
+                    <span class="feedback-rating-label">Overall impression</span>
+                    <div class="feedback-stars" role="radiogroup" aria-label="Overall portfolio rating">
+                      <button class="feedback-star" type="button" role="radio" aria-checked="false" aria-label="5 stars" data-feedback-rating="5">★</button>
+                      <button class="feedback-star" type="button" role="radio" aria-checked="false" aria-label="4 stars" data-feedback-rating="4">★</button>
+                      <button class="feedback-star" type="button" role="radio" aria-checked="false" aria-label="3 stars" data-feedback-rating="3">★</button>
+                      <button class="feedback-star" type="button" role="radio" aria-checked="false" aria-label="2 stars" data-feedback-rating="2">★</button>
+                      <button class="feedback-star" type="button" role="radio" aria-checked="false" aria-label="1 star" data-feedback-rating="1">★</button>
+                    </div>
+                  </div>
+
+                  <div class="feedback-fields">
+                    <div class="feedback-field">
+                      <label for="feedbackName">Name <span class="muted">(optional)</span></label>
+                      <input id="feedbackName" name="name" type="text" maxlength="80" autocomplete="name" placeholder="Your name">
+                    </div>
+                    <div class="feedback-field">
+                      <label for="feedbackCompany">Company <span class="muted">(optional)</span></label>
+                      <input id="feedbackCompany" name="company" type="text" maxlength="100" autocomplete="organization" placeholder="Company or organization">
+                    </div>
+                    <div class="feedback-field full">
+                      <label for="feedbackEmail">Preferred reply email <span class="muted">(optional)</span></label>
+                      <input id="feedbackEmail" name="email" type="email" maxlength="140" autocomplete="email" placeholder="Only include this if you'd like a reply">
+                    </div>
+                    <div class="feedback-field full">
+                      <label for="feedbackMessage">Message <span class="muted">(optional)</span></label>
+                      <textarea id="feedbackMessage" name="message" maxlength="1200" placeholder="What stood out, or what could be improved?"></textarea>
+                    </div>
+                  </div>
+
+                  <div class="feedback-submit-row">
+                    <button class="feedback-submit hover-target" type="submit">Prepare feedback email <span aria-hidden="true">↗</span></button>
+                    <p class="feedback-privacy">Nothing is submitted automatically. Your email app opens with a prepared draft, and you choose whether to send it.</p>
+                  </div>
+                  <p class="feedback-status" id="feedbackStatus" role="status" aria-live="polite"></p>
+                </form>
+              </div>
+          </section>
+
       <div class="footer-bottom">
         <span>© <span id="year">2026</span> D'Andre Knight · Designed and built with care</span>
         <a class="back-top hover-target" href="#top">Back to top ↑</a>
@@ -2289,6 +2642,89 @@ warrior <span class="op">=</span> <span class="str">"D'Andre"</span>
           if (toast) toast.textContent = 'Opening email application';
         }
         setTimeout(() => copy.textContent = 'Copy email', 2200);
+      });
+
+
+      // Portfolio feedback. GitHub Pages is static, so this prepares a mail draft
+      // instead of pretending the response was submitted to a server.
+      const feedbackForm = document.getElementById('portfolioFeedbackForm');
+      const feedbackStatus = document.getElementById('feedbackStatus');
+      const feedbackReactions = [...document.querySelectorAll('[data-feedback-reaction]')];
+      const feedbackStars = [...document.querySelectorAll('[data-feedback-rating]')];
+      let selectedFeedbackReaction = '';
+      let selectedFeedbackRating = 0;
+
+      feedbackReactions.forEach(button => {
+        button.addEventListener('click', () => {
+          const alreadySelected = button.getAttribute('aria-pressed') === 'true';
+          feedbackReactions.forEach(item => item.setAttribute('aria-pressed', 'false'));
+          selectedFeedbackReaction = alreadySelected ? '' : (button.dataset.feedbackReaction || '');
+          if (!alreadySelected) button.setAttribute('aria-pressed', 'true');
+          if (feedbackStatus) {
+            feedbackStatus.classList.remove('is-error');
+            feedbackStatus.textContent = selectedFeedbackReaction
+              ? `Selected: ${selectedFeedbackReaction}`
+              : '';
+          }
+        });
+      });
+
+      feedbackStars.forEach(button => {
+        button.addEventListener('click', () => {
+          selectedFeedbackRating = Number(button.dataset.feedbackRating || 0);
+          feedbackStars.forEach(item => {
+            const value = Number(item.dataset.feedbackRating || 0);
+            const selected = value <= selectedFeedbackRating;
+            item.classList.toggle('is-selected', selected);
+            item.setAttribute('aria-checked', String(value === selectedFeedbackRating));
+          });
+          if (feedbackStatus) {
+            feedbackStatus.classList.remove('is-error');
+            feedbackStatus.textContent = `Rating selected: ${selectedFeedbackRating} of 5`;
+          }
+        });
+      });
+
+      feedbackForm?.addEventListener('submit', event => {
+        event.preventDefault();
+
+        const name = document.getElementById('feedbackName')?.value.trim() || '';
+        const company = document.getElementById('feedbackCompany')?.value.trim() || '';
+        const visitorEmail = document.getElementById('feedbackEmail')?.value.trim() || '';
+        const message = document.getElementById('feedbackMessage')?.value.trim() || '';
+
+        if (!selectedFeedbackReaction && !selectedFeedbackRating && !message) {
+          if (feedbackStatus) {
+            feedbackStatus.classList.add('is-error');
+            feedbackStatus.textContent = 'Choose a reaction, select a rating, or write a short message first.';
+          }
+          return;
+        }
+
+        const subject = 'Portfolio feedback for D’Andre Knight';
+        const lines = [
+          'PORTFOLIO FEEDBACK',
+          '',
+          `Quick reaction: ${selectedFeedbackReaction || 'Not selected'}`,
+          `Overall rating: ${selectedFeedbackRating ? `${selectedFeedbackRating}/5` : 'Not selected'}`,
+          '',
+          `Name: ${name || 'Not provided'}`,
+          `Company: ${company || 'Not provided'}`,
+          `Preferred reply email: ${visitorEmail || 'Not provided'}`,
+          '',
+          'Message:',
+          message || 'No written message provided.',
+          '',
+          `Portfolio page: ${location.href}`
+        ];
+
+        const mailto = `mailto:${emailAddress}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(lines.join('\n'))}`;
+        if (feedbackStatus) {
+          feedbackStatus.classList.remove('is-error');
+          feedbackStatus.textContent = 'Feedback draft prepared. Confirm it in your email app to send it.';
+        }
+        if (toast) toast.textContent = 'Opening a prepared feedback email';
+        location.href = mailto;
       });
 
       // Official-channel verification panel.
