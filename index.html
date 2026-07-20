@@ -961,61 +961,414 @@
       .tech-list li::after { display:none; }
     }
 
-  
-
-    /* Recruiter portfolio assistant */
+    /* Rebuilt portfolio assistant */
     .ai-launcher {
-      position: fixed; right: 22px; bottom: 22px; z-index: 930;
-      display: inline-flex; align-items: center; gap: 10px;
-      min-height: 54px; padding: 0 18px; border: 1px solid rgba(185,255,57,.34);
-      border-radius: 999px; color: #071000; background: var(--acid);
-      box-shadow: 0 18px 50px rgba(0,0,0,.38), 0 0 30px rgba(185,255,57,.13);
-      font-weight: 900; cursor: pointer; transition: transform .25s var(--ease), box-shadow .25s;
+      position: fixed;
+      right: 24px;
+      bottom: 22px;
+      z-index: 940;
+      width: 78px;
+      height: 78px;
+      padding: 0;
+      border: 0;
+      border-radius: 50%;
+      background: transparent;
+      cursor: pointer;
+      isolation: isolate;
+      transition: opacity .24s var(--ease), transform .24s var(--ease);
     }
-    .ai-launcher:hover { transform: translateY(-3px); box-shadow: 0 24px 60px rgba(0,0,0,.44), 0 0 42px rgba(185,255,57,.2); }
-    .ai-launcher .ai-spark { width: 27px; height: 27px; display:grid; place-items:center; border-radius:50%; background:#071000; color:var(--acid); font-size:.82rem; }
-    .ai-launcher[aria-expanded="true"] .ai-spark { transform: rotate(45deg); }
+    .ai-launcher:hover { transform: translateY(-4px) scale(1.035); }
+    .ai-launcher[aria-expanded="true"] {
+      opacity: 0;
+      transform: scale(.78);
+      pointer-events: none;
+    }
+    .ai-launcher-label {
+      position: absolute;
+      right: calc(100% + 12px);
+      top: 50%;
+      transform: translate(8px, -50%);
+      padding: 10px 14px;
+      border: 1px solid rgba(185,255,57,.26);
+      border-radius: 999px;
+      color: var(--text);
+      background: rgba(9,11,16,.9);
+      box-shadow: 0 15px 42px rgba(0,0,0,.34);
+      white-space: nowrap;
+      font-size: .74rem;
+      font-weight: 850;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .22s var(--ease), transform .22s var(--ease);
+    }
+    .ai-launcher:hover .ai-launcher-label,
+    .ai-launcher:focus-visible .ai-launcher-label {
+      opacity: 1;
+      transform: translate(0, -50%);
+    }
+
+    .knight-orb {
+      --orb-size: 78px;
+      position: relative;
+      width: var(--orb-size);
+      height: var(--orb-size);
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 38% 32%, rgba(255,255,255,.82), transparent 8%),
+        radial-gradient(circle at 50% 52%, rgba(14,22,29,.2), rgba(4,7,12,.96) 67%);
+      border: 1px solid rgba(255,255,255,.2);
+      box-shadow:
+        0 20px 44px rgba(0,0,0,.5),
+        0 0 30px rgba(104,228,255,.22),
+        0 0 42px rgba(185,255,57,.18),
+        inset 0 0 20px rgba(255,255,255,.07);
+      animation: knightOrbBreath 3.8s ease-in-out infinite;
+    }
+    .knight-orb::before {
+      content: "";
+      position: absolute;
+      inset: 8%;
+      border-radius: 50%;
+      background:
+        conic-gradient(
+          from 0deg,
+          transparent 0 16deg,
+          rgba(185,255,57,.95) 16deg 42deg,
+          transparent 42deg 120deg,
+          rgba(104,228,255,.95) 120deg 146deg,
+          transparent 146deg 240deg,
+          rgba(168,135,255,.95) 240deg 266deg,
+          transparent 266deg 360deg
+        );
+      filter: blur(1.5px);
+      animation: knightOrbSpin 8.5s linear infinite;
+    }
+    .knight-orb::after {
+      content: "";
+      position: absolute;
+      inset: 17%;
+      border-radius: 42% 58% 47% 53% / 52% 44% 56% 48%;
+      background:
+        radial-gradient(circle at 40% 34%, rgba(255,255,255,.65), transparent 12%),
+        radial-gradient(circle at 32% 68%, rgba(185,255,57,.82), transparent 32%),
+        radial-gradient(circle at 72% 38%, rgba(104,228,255,.88), transparent 35%),
+        radial-gradient(circle at 66% 76%, rgba(168,135,255,.72), transparent 34%),
+        #0a1118;
+      box-shadow: inset 0 0 20px rgba(255,255,255,.12);
+      animation: knightOrbMorph 5.6s ease-in-out infinite alternate;
+    }
+    .knight-orb-core {
+      position: relative;
+      z-index: 2;
+      width: 19%;
+      aspect-ratio: 1;
+      transform: rotate(45deg);
+      border-radius: 28%;
+      background: linear-gradient(145deg, #efffc7, var(--acid) 55%, #74c725);
+      box-shadow: 0 0 18px rgba(185,255,57,.92);
+      animation: knightCorePulse 2.2s ease-in-out infinite;
+    }
+    .knight-orb-ring {
+      position: absolute;
+      z-index: 3;
+      inset: 6%;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,.13);
+      border-top-color: rgba(104,228,255,.65);
+      border-left-color: rgba(185,255,57,.48);
+      animation: knightOrbSpin 11s linear infinite reverse;
+    }
+    @keyframes knightOrbSpin { to { transform: rotate(360deg); } }
+    @keyframes knightOrbBreath {
+      50% {
+        box-shadow:
+          0 23px 50px rgba(0,0,0,.52),
+          0 0 38px rgba(104,228,255,.3),
+          0 0 55px rgba(185,255,57,.25),
+          inset 0 0 25px rgba(255,255,255,.09);
+      }
+    }
+    @keyframes knightOrbMorph {
+      50% { border-radius: 57% 43% 60% 40% / 42% 58% 43% 57%; transform: rotate(8deg) scale(1.025); }
+      100% { border-radius: 46% 54% 43% 57% / 58% 42% 60% 40%; transform: rotate(-7deg) scale(.985); }
+    }
+    @keyframes knightCorePulse { 50% { transform: rotate(45deg) scale(1.16); filter: brightness(1.14); } }
 
     .ai-assistant {
-      position: fixed; right: 22px; bottom: 88px; z-index: 929;
-      width: min(410px, calc(100vw - 28px)); height: min(650px, calc(100svh - 120px));
-      display: grid; grid-template-rows: auto minmax(0,1fr) auto;
-      border: 1px solid var(--line-strong); border-radius: 28px; overflow: hidden;
-      background: rgba(10,12,17,.96); backdrop-filter: blur(24px) saturate(125%);
-      box-shadow: 0 34px 110px rgba(0,0,0,.58);
-      opacity: 0; transform: translateY(14px) scale(.97); pointer-events: none;
+      position: fixed;
+      right: 22px;
+      bottom: 22px;
+      z-index: 939;
+      width: min(410px, calc(100vw - 28px));
+      height: min(620px, calc(100svh - 44px));
+      min-height: 480px;
+      display: grid;
+      grid-template-rows: auto minmax(0,1fr) auto;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,.2);
+      border-radius: 30px;
+      background:
+        linear-gradient(160deg, rgba(15,18,25,.985), rgba(7,9,14,.985));
+      box-shadow: 0 36px 110px rgba(0,0,0,.64);
+      backdrop-filter: blur(26px) saturate(125%);
+      opacity: 0;
+      transform: translateY(16px) scale(.975);
+      transform-origin: bottom right;
+      pointer-events: none;
       transition: opacity .26s var(--ease), transform .26s var(--ease);
+      contain: layout paint;
     }
-    .ai-assistant.is-open { opacity:1; transform:none; pointer-events:auto; }
-    .ai-head { display:flex; align-items:center; justify-content:space-between; gap:14px; padding:17px 18px; border-bottom:1px solid var(--line); }
-    .ai-identity { display:flex; align-items:center; gap:11px; min-width:0; }
-    .ai-avatar { width:39px; height:39px; flex:0 0 auto; display:grid; place-items:center; border-radius:13px; color:#071000; background:linear-gradient(145deg,var(--acid),var(--cyan)); font-weight:950; }
-    .ai-identity strong { display:block; font-size:.9rem; }
-    .ai-identity span { display:block; color:var(--muted); font-size:.68rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-    .ai-close { width:38px; height:38px; flex:0 0 auto; border-radius:50%; border:1px solid var(--line); color:var(--text); background:rgba(255,255,255,.04); cursor:pointer; font-size:1.15rem; }
-    .ai-messages { min-height:0; overflow-y:auto; padding:18px; display:flex; flex-direction:column; gap:12px; scroll-behavior:smooth; }
-    .ai-message { max-width:88%; padding:12px 14px; border-radius:17px; font-size:.83rem; line-height:1.58; white-space:pre-wrap; }
-    .ai-message.bot { align-self:flex-start; color:#d8dae2; background:rgba(255,255,255,.055); border:1px solid rgba(255,255,255,.07); border-bottom-left-radius:5px; }
-    .ai-message.user { align-self:flex-end; color:#071000; background:var(--acid); border-bottom-right-radius:5px; font-weight:700; }
-    .ai-message a { color:var(--cyan); text-decoration:underline; text-underline-offset:3px; }
-    .ai-source { display:block; margin-top:8px; color:#777b88; font-size:.65rem; text-transform:uppercase; letter-spacing:.08em; }
+    .ai-assistant.is-open {
+      opacity: 1;
+      transform: none;
+      pointer-events: auto;
+    }
+    .ai-head {
+      min-width: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 16px 17px;
+      border-bottom: 1px solid var(--line);
+      background: rgba(8,10,15,.72);
+    }
+    .ai-identity {
+      min-width: 0;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .ai-avatar {
+      flex: 0 0 auto;
+      width: 48px;
+      height: 48px;
+      background: transparent;
+    }
+    .ai-avatar .knight-orb { --orb-size: 48px; }
+    .ai-title-line {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 7px;
+      min-width: 0;
+    }
+    .ai-title-line strong {
+      font-size: .93rem;
+      letter-spacing: -.015em;
+    }
+    .ai-ready {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: #baffd1;
+      font-size: .61rem;
+      font-weight: 900;
+      letter-spacing: .11em;
+      text-transform: uppercase;
+    }
+    .ai-ready::before {
+      content: "";
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #2ee681;
+      box-shadow: 0 0 14px rgba(46,230,129,.8);
+    }
+    .ai-subtitle {
+      display: block;
+      max-width: 255px;
+      color: var(--muted);
+      font-size: .68rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .ai-close {
+      width: 40px;
+      height: 40px;
+      flex: 0 0 auto;
+      display: grid;
+      place-items: center;
+      padding: 0;
+      border: 1px solid var(--line-strong);
+      border-radius: 50%;
+      color: var(--text);
+      background: rgba(255,255,255,.04);
+      font-size: 1.28rem;
+      cursor: pointer;
+      transition: background .2s, transform .2s;
+    }
+    .ai-close:hover { background: rgba(255,255,255,.1); transform: rotate(7deg); }
+
+    .ai-messages {
+      min-width: 0;
+      min-height: 0;
+      overflow-x: hidden;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      padding: 18px;
+      scroll-behavior: smooth;
+      overscroll-behavior: contain;
+    }
+    .ai-message {
+      max-width: 88%;
+      min-width: 0;
+      padding: 12px 14px;
+      border-radius: 17px;
+      font-size: .82rem;
+      line-height: 1.58;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+    }
+    .ai-message.bot {
+      align-self: flex-start;
+      color: #d8dae2;
+      background: rgba(255,255,255,.055);
+      border: 1px solid rgba(255,255,255,.075);
+      border-bottom-left-radius: 6px;
+    }
+    .ai-message.user {
+      align-self: flex-end;
+      color: #071000;
+      background: var(--acid);
+      border-bottom-right-radius: 6px;
+      font-weight: 750;
+    }
+    .ai-message a { color: var(--cyan); text-decoration: underline; text-underline-offset: 3px; }
+    .ai-source {
+      display: block;
+      margin-top: 8px;
+      color: #777b88;
+      font-size: .62rem;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
     .ai-actions { display:flex; flex-wrap:wrap; gap:7px; margin-top:11px; }
-    .ai-action { display:inline-flex; align-items:center; gap:6px; padding:7px 9px; border-radius:999px; border:1px solid rgba(104,228,255,.22); color:#dff9ff; background:rgba(104,228,255,.07); font-size:.66rem; font-weight:850; text-decoration:none !important; }
+    .ai-action {
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      padding:7px 9px;
+      border-radius:999px;
+      border:1px solid rgba(104,228,255,.22);
+      color:#dff9ff;
+      background:rgba(104,228,255,.07);
+      font-size:.66rem;
+      font-weight:850;
+      text-decoration:none !important;
+    }
     .ai-action:hover { color:#071000; background:var(--cyan); border-color:var(--cyan); }
-    .ai-suggestions { display:flex; gap:7px; overflow-x:auto; padding:0 18px 12px; scrollbar-width:none; }
-    .ai-suggestions::-webkit-scrollbar { display:none; }
-    .ai-chip { flex:0 0 auto; border:1px solid var(--line); border-radius:999px; padding:8px 10px; color:#c7c9d1; background:rgba(255,255,255,.035); font-size:.68rem; font-weight:800; cursor:pointer; }
-    .ai-chip:hover { color:#071000; background:var(--acid); border-color:var(--acid); }
-    .ai-form-wrap { border-top:1px solid var(--line); background:rgba(8,10,14,.92); }
-    .ai-form { display:flex; gap:8px; padding:12px; }
-    .ai-input { min-width:0; flex:1; height:46px; border:1px solid var(--line); border-radius:14px; padding:0 13px; color:var(--text); background:rgba(255,255,255,.045); outline:none; font:inherit; font-size:.82rem; }
-    .ai-input:focus { border-color:rgba(185,255,57,.5); box-shadow:0 0 0 3px rgba(185,255,57,.08); }
-    .ai-send { width:46px; height:46px; flex:0 0 auto; border:0; border-radius:14px; color:#071000; background:var(--acid); font-weight:950; cursor:pointer; }
-    .ai-disclaimer { margin:0; padding:0 14px 12px; color:#626673; font-size:.61rem; line-height:1.45; }
+
+    .ai-form-wrap {
+      min-width: 0;
+      border-top: 1px solid var(--line);
+      background: rgba(8,10,14,.96);
+    }
+    .ai-suggestions {
+      min-width: 0;
+      max-width: 100%;
+      display: flex;
+      flex-wrap: nowrap;
+      gap: 7px;
+      padding: 11px 14px 10px;
+      overflow-x: auto;
+      overflow-y: hidden;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+      overscroll-behavior-x: contain;
+      touch-action: pan-x;
+      cursor: grab;
+      user-select: none;
+      -webkit-overflow-scrolling: touch;
+    }
+    .ai-suggestions::-webkit-scrollbar { display: none; }
+    .ai-suggestions.is-dragging { cursor: grabbing; scroll-behavior: auto; }
+    .ai-chip {
+      flex: 0 0 auto;
+      white-space: nowrap;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 8px 11px;
+      color: #c7c9d1;
+      background: rgba(255,255,255,.035);
+      font-size: .67rem;
+      font-weight: 800;
+      cursor: pointer;
+      transition: color .2s, background .2s, border-color .2s;
+    }
+    .ai-chip:hover, .ai-chip:focus-visible {
+      color: #071000;
+      background: var(--acid);
+      border-color: var(--acid);
+      outline: none;
+    }
+    .ai-form {
+      min-width: 0;
+      display: grid;
+      grid-template-columns: minmax(0,1fr) 48px;
+      gap: 8px;
+      padding: 0 12px 10px;
+    }
+    .ai-input {
+      min-width: 0;
+      width: 100%;
+      height: 48px;
+      border: 1px solid var(--line);
+      border-radius: 15px;
+      padding: 0 13px;
+      color: var(--text);
+      background: rgba(255,255,255,.045);
+      outline: none;
+      font: inherit;
+      font-size: .81rem;
+    }
+    .ai-input:focus {
+      border-color: rgba(185,255,57,.56);
+      box-shadow: 0 0 0 3px rgba(185,255,57,.08);
+    }
+    .ai-send {
+      width: 48px;
+      height: 48px;
+      border: 0;
+      border-radius: 15px;
+      color: #071000;
+      background: var(--acid);
+      font-size: 1.15rem;
+      font-weight: 950;
+      cursor: pointer;
+      transition: transform .2s, filter .2s;
+    }
+    .ai-send:hover { transform: translateY(-2px); filter: brightness(1.05); }
+    .ai-disclaimer {
+      margin: 0;
+      padding: 0 14px 13px;
+      color: #626673;
+      font-size: .6rem;
+      line-height: 1.45;
+    }
 
     @media (max-width: 680px) {
-      .ai-launcher { right:14px; bottom:14px; min-height:50px; padding:0 15px; }
-      .ai-assistant { right:7px; bottom:72px; width:calc(100vw - 14px); height:min(680px, calc(100svh - 84px)); border-radius:23px; }
+      .ai-launcher { right: 14px; bottom: 14px; width: 66px; height: 66px; }
+      .ai-launcher .knight-orb { --orb-size: 66px; }
+      .ai-launcher-label { display: none; }
+      .ai-assistant {
+        right: 7px;
+        bottom: 7px;
+        width: calc(100vw - 14px);
+        height: min(640px, calc(100svh - 14px));
+        min-height: 430px;
+        border-radius: 24px;
+      }
+      .ai-head { padding: 14px; }
+      .ai-avatar { width: 44px; height: 44px; }
+      .ai-avatar .knight-orb { --orb-size: 44px; }
+      .ai-subtitle { max-width: 205px; }
     }
 
 </style>
@@ -1084,25 +1437,43 @@
   </div>
 
 
-
-  <button class="ai-launcher hover-target" id="aiLauncher" type="button" aria-expanded="false" aria-controls="portfolioAssistant">
-    <span class="ai-spark" aria-hidden="true">✦</span>
-    <span>Ask about D'Andre</span>
+  <button class="ai-launcher hover-target" id="aiLauncher" type="button" aria-expanded="false" aria-controls="portfolioAssistant" aria-label="Ask about D'Andre">
+    <span class="ai-launcher-label">Ask about D'Andre</span>
+    <span class="knight-orb" aria-hidden="true">
+      <span class="knight-orb-ring"></span>
+      <span class="knight-orb-core"></span>
+    </span>
   </button>
 
   <aside class="ai-assistant" id="portfolioAssistant" aria-hidden="true" aria-label="Ask about D'Andre portfolio assistant">
     <div class="ai-head">
       <div class="ai-identity">
-        <div class="ai-avatar" aria-hidden="true">DK</div>
-        <div><strong>Portfolio Assistant</strong><span>Verified résumé and project information</span></div>
+        <div class="ai-avatar" aria-hidden="true">
+          <span class="knight-orb">
+            <span class="knight-orb-ring"></span>
+            <span class="knight-orb-core"></span>
+          </span>
+        </div>
+        <div>
+          <div class="ai-title-line">
+            <strong>Portfolio Assistant</strong>
+            <span class="ai-ready">Ready</span>
+          </div>
+          <span class="ai-subtitle">Verified résumé and project information</span>
+        </div>
       </div>
       <button class="ai-close" type="button" aria-label="Close portfolio assistant">×</button>
     </div>
+
     <div class="ai-messages" id="aiMessages" aria-live="polite">
-      <div class="ai-message bot">Hi. I can answer recruiter questions about D'Andre's skills, projects, education, availability, and experience.<span class="ai-source">Answers use approved portfolio information</span></div>
+      <div class="ai-message bot">
+        Ask me about D'Andre's skills, projects, education, availability, and experience.
+        <span class="ai-source">Verified résumé and portfolio information</span>
+      </div>
     </div>
+
     <div class="ai-form-wrap">
-      <div class="ai-suggestions" aria-label="Suggested questions">
+      <div class="ai-suggestions" id="aiSuggestions" aria-label="Suggested questions">
         <button class="ai-chip" type="button">What are his strongest skills?</button>
         <button class="ai-chip" type="button">Tell me about MissionShield</button>
         <button class="ai-chip" type="button">Why should we interview D'Andre?</button>
@@ -1112,11 +1483,12 @@
         <input class="ai-input" id="aiInput" type="text" autocomplete="off" maxlength="240" placeholder="Ask a recruiter question…" aria-label="Ask a question about D'Andre" />
         <button class="ai-send" type="submit" aria-label="Send question">↗</button>
       </form>
-      <p class="ai-disclaimer">This assistant answers only from verified résumé and portfolio information. It will say when an answer is unavailable.</p>
+      <p class="ai-disclaimer">Answers use only verified résumé and portfolio information.</p>
     </div>
   </aside>
 
-  <main id="main">
+
+<main id="main">
     <section class="hero" id="top">
       <div class="container hero-grid">
         <div class="hero-copy-wrap">
@@ -1987,36 +2359,210 @@ warrior <span class="op">=</span> <span class="str">"D'Andre"</span>
       const normalizeQuestion = value => value.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9+#. ]/g,' ').replace(/\s+/g,' ').trim();
       const includesAny = (q, words) => words.some(word => q.includes(word));
       const action = (label, href, external=true) => ({ label, href, external });
-      const getRecruiterAnswer = raw => {
+
+      const conversationState = {
+        lastTopic: '',
+        lastAnswer: '',
+        turns: 0
+      };
+
+      const topicDetails = {
+        missionshield: "MissionShield demonstrates full-stack ownership: React UI, Express API routes, SQLite persistence, forms, filters, incident tracking, readiness scoring, and security-focused product thinking.",
+        athena: "Athena demonstrates AI integration and backend workflow design through Gemini, Twilio Voice, Flask, SQLite, transcript logging, analytics, testing, and six healthcare conversation scenarios.",
+        knightlang: "KnightLang is especially strong evidence of computer-science fundamentals because it required lexical analysis, parsing, AST construction, recursive evaluation, control flow, functions, and interpreter debugging.",
+        mealmatch: "MealMatch demonstrates traditional full-stack web development with PHP, MySQL, authentication, sessions, relational data design, administration, and analytics.",
+        superbit: "Super Bit demonstrates local AI experimentation, automation, desktop integration, bilingual interaction, memory, document analysis, and safety controls.",
+        antiscam: "The Anti-Scam project demonstrates MERN development, authentication, profiles, comments, moderation, teamwork, Git collaboration, and a security-awareness use case.",
+        skills: "His most marketable combination is Python plus full-stack JavaScript, supported by SQL, Linux, Git, REST APIs, automation, and security fundamentals.",
+        roles: "The closest match is junior software engineering, especially Python, full-stack, AI application, or systems-oriented work. Junior IT and cybersecurity roles are also reasonable secondary targets.",
+        projects: "The strongest three projects to discuss first are Athena, MissionShield, and KnightLang because together they show AI integration, full-stack development, cybersecurity thinking, and core computer-science depth.",
+        education: "His degree is strengthened by a Professional Communication minor, relevant coursework, academic honors, and project work that goes beyond basic class assignments.",
+        experience: "Although most of his experience is project-based, the projects are broad and complete enough to demonstrate practical implementation, debugging, integration, and documentation skills."
+      };
+
+      const getSingleRecruiterAnswer = raw => {
         const q = normalizeQuestion(raw);
-        const result = (text, actions=[]) => ({ text, actions });
+        const result = (text, actions=[], topic='') => ({ text, actions, topic });
         if (!q) return result("Please enter a question about D'Andre's professional background.");
+
+        conversationState.turns += 1;
+
+        const projectAliases = {
+          athena: ['athena','voice bot','healthcare bot','healthcare assistant','twilio project','gemini project'],
+          missionshield: ['mission shield','missionshield','readiness dashboard','cyber dashboard','cyber project'],
+          knightlang: ['knightlang','programming language','language project','interpreter project','lexer project','parser project'],
+          mealmatch: ['meal match','mealmatch','meal project','food project','php project'],
+          superbit: ['super bit','superbit','bit assistant','desktop assistant','local ai assistant'],
+          antiscam: ['anti scam','antiscam','scam project','scam app','scam website','fraud project','bit by bit','the scam one']
+        };
+
+        const projectStacks = {
+          athena: "Athena uses Python, Flask, SQLite, Google Gemini, Twilio Voice, HTML/CSS, webhook handling, transcript logging, analytics, and testing workflows.",
+          missionshield: "MissionShield uses React, JavaScript, Node.js, Express, SQLite, REST API routes, persistent storage, forms, filtering, and dashboard components.",
+          knightlang: "KnightLang uses Python and implements a lexer, parser, abstract syntax tree, interpreter, variables, functions, control flow, strings, comparisons, and indentation-based blocks.",
+          mealmatch: "MealMatch uses PHP, MySQL, SQL, HTML, CSS, authentication, sessions, relational database design, administration, and analytics.",
+          superbit: "Super Bit uses Python, local LLM workflows, speech recognition, automation, memory, document analysis, bilingual interaction, file ingestion, and desktop integrations.",
+          antiscam: "The Anti-Scam project uses MongoDB, Express, React, Node.js, authentication, profiles, comments, moderation features, and collaborative Git workflows."
+        };
+
+        const detectedProject = Object.entries(projectAliases).find(([, aliases]) =>
+          aliases.some(alias => q.includes(alias))
+        )?.[0] || '';
+
+        const refersToPrevious = includesAny(q, [
+          'it','that','that one','this one','the project','that project','this project',
+          'what about it','tell me more about it','how was it built','what did he use'
+        ]);
+
+        const activeProject = detectedProject ||
+          ((refersToPrevious && ['athena','missionshield','knightlang','mealmatch','superbit','antiscam'].includes(conversationState.lastTopic))
+            ? conversationState.lastTopic
+            : '');
+
+        const asksForTechnology = includesAny(q, [
+          'technology','technologies','tech stack','stack','built with','use to build',
+          'what did he use','languages used','framework','frameworks','tools used'
+        ]);
+
+        if (activeProject && asksForTechnology) {
+          return result(projectStacks[activeProject], [], activeProject);
+        }
+
+        if (activeProject && includesAny(q, [
+          'tell me about it','tell me more','more about it','what about it','explain it',
+          'that project','this project','how does it work','what does it do'
+        ])) {
+          const projectAnswer = recruiterKnowledge[activeProject] || topicDetails[activeProject];
+          const links = {
+            athena: 'https://github.com/dandrek123/athena-voice-bot',
+            missionshield: 'https://github.com/dandrek123/MissionShield',
+            knightlang: 'https://github.com/dandrek123/KnightLang',
+            mealmatch: 'https://github.com/dandrek123/MealMatch',
+            antiscam: 'https://github.com/dandrek123/Bit_by_Bit'
+          };
+          const actions = links[activeProject]
+            ? [action('View GitHub', links[activeProject]), action('See projects','#work',false)]
+            : [action('View résumé','DAndre_Knight_R.pdf')];
+          return result(projectAnswer, actions, activeProject);
+        }
+
+        const greetingPhrases = ['hi','hello','hey','good morning','good afternoon','good evening'];
+        const isGreeting = greetingPhrases.some(phrase =>
+          q === phrase || q.startsWith(phrase + ' ') || q.endsWith(' ' + phrase)
+        );
+        if (isGreeting) {
+          return result("Hello. I can help with D'Andre's skills, projects, education, experience, availability, citizenship, and target roles. You can also ask a follow-up after any answer.");
+        }
+
+        if (includesAny(q, ['thanks','thank you','appreciate it'])) {
+          return result("You're welcome. Ask another question whenever you're ready.");
+        }
+
+        if (includesAny(q, ['tell me more','more details','go deeper','expand on that','what else','and what about that'])) {
+          if (conversationState.lastTopic && topicDetails[conversationState.lastTopic]) {
+            return result(topicDetails[conversationState.lastTopic], [], conversationState.lastTopic);
+          }
+          return result("Tell me which project, skill, role, or experience area you want more detail about.");
+        }
+
+        if (includesAny(q, ['what about his skills','and his skills','what skills'])) {
+          return result(recruiterKnowledge.skills, [action('See skills','#skills',false), action('View GitHub','https://github.com/dandrek123')], 'skills');
+        }
+
+        if (includesAny(q, ['what about his projects','and his projects','which projects'])) {
+          return result(recruiterKnowledge.projects, [action('Explore projects','#work',false), action('View GitHub','https://github.com/dandrek123')], 'projects');
+        }
+
+        if (includesAny(q, ['what about his experience','and his experience'])) {
+          return result(recruiterKnowledge.experience, [action('View résumé','DAndre_Knight_R.pdf')], 'experience');
+        }
+
+        if (includesAny(q, ['which one is strongest','strongest project','best project'])) {
+          return result("Athena, MissionShield, and KnightLang are his strongest portfolio pieces. Athena shows AI and voice workflow integration, MissionShield shows full-stack cybersecurity development, and KnightLang shows core computer-science depth.", [action('Explore projects','#work',false)], 'projects');
+        }
         if (includesAny(q, ['phone','number','address','home address','private','password','secret','api key'])) return result("I do not provide private or sensitive information. Recruiters can use the verified email, LinkedIn, résumé, and GitHub links on this portfolio.", [action('View résumé','DAndre_Knight_R.pdf'), action('LinkedIn','https://www.linkedin.com/in/d%E2%80%99andre-knight-358836251')]);
-        if (includesAny(q, ['why should we interview','why interview','why hire','good candidate','worth interviewing'])) return result(recruiterKnowledge.interview, [action('View résumé','DAndre_Knight_R.pdf'), action('Explore projects','#work',false), action('Contact D\'Andre','#contact',false)]);
-        if (includesAny(q, ['which role fits','best role','best fit','role fit','position fits'])) return result(recruiterKnowledge.bestfit, [action('View résumé','DAndre_Knight_R.pdf'), action('See skills','#skills',false)]);
-        if (includesAny(q, ['mission shield','missionshield','cyber readiness','readiness dashboard'])) return result(recruiterKnowledge.missionshield, [action('View GitHub','https://github.com/dandrek123/MissionShield'), action('See project','#work',false)]);
-        if (includesAny(q, ['athena','voice bot','healthcare','twilio','gemini'])) return result(recruiterKnowledge.athena, [action('View GitHub','https://github.com/dandrek123/athena-voice-bot'), action('See project','#work',false)]);
-        if (includesAny(q, ['knightlang','programming language','lexer','parser','interpreter','ast'])) return result(recruiterKnowledge.knightlang, [action('View GitHub','https://github.com/dandrek123/KnightLang'), action('See project','#work',false)]);
-        if (includesAny(q, ['meal match','mealmatch','php','mysql','meal'])) return result(recruiterKnowledge.mealmatch, [action('View GitHub','https://github.com/dandrek123/MealMatch'), action('See project','#work',false)]);
-        if (includesAny(q, ['super bit','superbit','desktop assistant','local llm'])) return result(recruiterKnowledge.superbit, [action('View résumé','DAndre_Knight_R.pdf')]);
-        if (includesAny(q, ['anti scam','antiscam','bit by bit','mern','scam app'])) return result(recruiterKnowledge.antiscam, [action('View GitHub','https://github.com/dandrek123/Bit_by_Bit'), action('See project','#work',false)]);
+        if (includesAny(q, ['why should we interview','why interview','why hire','good candidate','worth interviewing'])) return result(recruiterKnowledge.interview, [action('View résumé','DAndre_Knight_R.pdf'), action('Explore projects','#work',false), action('Contact D\'Andre','#contact',false)], 'experience');
+        if (includesAny(q, ['which role fits','best role','best fit','role fit','position fits'])) return result(recruiterKnowledge.bestfit, [action('View résumé','DAndre_Knight_R.pdf'), action('See skills','#skills',false)], 'roles');
+        if (includesAny(q, ['mission shield','missionshield','cyber readiness','readiness dashboard'])) return result(recruiterKnowledge.missionshield, [action('View GitHub','https://github.com/dandrek123/MissionShield'), action('See project','#work',false)], 'missionshield');
+        if (includesAny(q, ['athena','voice bot','healthcare','twilio','gemini'])) return result(recruiterKnowledge.athena, [action('View GitHub','https://github.com/dandrek123/athena-voice-bot'), action('See project','#work',false)], 'athena');
+        if (includesAny(q, ['knightlang','programming language','lexer','parser','interpreter','ast'])) return result(recruiterKnowledge.knightlang, [action('View GitHub','https://github.com/dandrek123/KnightLang'), action('See project','#work',false)], 'knightlang');
+        if (includesAny(q, ['meal match','mealmatch','php','mysql','meal'])) return result(recruiterKnowledge.mealmatch, [action('View GitHub','https://github.com/dandrek123/MealMatch'), action('See project','#work',false)], 'mealmatch');
+        if (includesAny(q, ['super bit','superbit','desktop assistant','local llm'])) return result(recruiterKnowledge.superbit, [action('View résumé','DAndre_Knight_R.pdf')], 'superbit');
+        if (includesAny(q, ['anti scam','antiscam','bit by bit','mern','scam app','scam project','scam website','fraud project','online scam','scam awareness','the scam one'])) return result(recruiterKnowledge.antiscam, [action('View GitHub','https://github.com/dandrek123/Bit_by_Bit'), action('See project','#work',false)], 'antiscam');
         if (includesAny(q, ['python'])) return result(recruiterKnowledge.python, [action('Athena','https://github.com/dandrek123/athena-voice-bot'), action('KnightLang','https://github.com/dandrek123/KnightLang')]);
         if (includesAny(q, ['javascript','react','node','express','front end','frontend','full stack'])) return result(recruiterKnowledge.javascript, [action('MissionShield','https://github.com/dandrek123/MissionShield'), action('Anti-Scam','https://github.com/dandrek123/Bit_by_Bit')]);
-        if (includesAny(q, ['strongest','strength','stand out','differentiat'])) return result(recruiterKnowledge.strengths, [action('Explore projects','#work',false), action('View résumé','DAndre_Knight_R.pdf')]);
-        if (includesAny(q, ['skill','technology','tech stack','languages does','what does he know'])) return result(recruiterKnowledge.skills, [action('See skills','#skills',false), action('View GitHub','https://github.com/dandrek123')]);
-        if (includesAny(q, ['education','degree','graduate','graduat','university','fsu','coursework'])) return result(recruiterKnowledge.education, [action('View résumé','DAndre_Knight_R.pdf')]);
+        if (includesAny(q, ['strongest','strength','stand out','differentiat'])) return result(recruiterKnowledge.strengths, [action('Explore projects','#work',false), action('View résumé','DAndre_Knight_R.pdf')], 'skills');
+        if (includesAny(q, ['skill','technology','tech stack','languages does','what does he know'])) return result(recruiterKnowledge.skills, [action('See skills','#skills',false), action('View GitHub','https://github.com/dandrek123')], 'skills');
+        if (includesAny(q, ['education','degree','graduate','graduat','university','fsu','coursework'])) return result(recruiterKnowledge.education, [action('View résumé','DAndre_Knight_R.pdf')], 'education');
         if (includesAny(q, ['certificate','certification','google it'])) return result(recruiterKnowledge.certification, [action('View résumé','DAndre_Knight_R.pdf')]);
         if (includesAny(q, ['honor','president list','dean list'])) return result(recruiterKnowledge.honors, [action('View résumé','DAndre_Knight_R.pdf')]);
         if (includesAny(q, ['citizen','citizenship','clearance','security clearance','work authorization','sponsor'])) return result(recruiterKnowledge.citizenship, [action('View résumé','DAndre_Knight_R.pdf')]);
         if (includesAny(q, ['where','location','based','relocate','remote','hybrid'])) return result(recruiterKnowledge.location, [action('Contact D\'Andre','#contact',false)]);
-        if (includesAny(q, ['role','job','position','seeking','looking for','opportunit','junior','entry level'])) return result(recruiterKnowledge.roles + ' ' + recruiterKnowledge.availability, [action('View résumé','DAndre_Knight_R.pdf'), action('Contact D\'Andre','#contact',false)]);
-        if (includesAny(q, ['experience','professional experience','job shadow','arpia'])) return result(recruiterKnowledge.experience, [action('View résumé','DAndre_Knight_R.pdf')]);
-        if (includesAny(q, ['project','portfolio','built','work'])) return result(recruiterKnowledge.projects, [action('Explore projects','#work',false), action('View GitHub','https://github.com/dandrek123')]);
+        if (includesAny(q, ['role','job','position','seeking','looking for','opportunit','junior','entry level'])) return result(recruiterKnowledge.roles + ' ' + recruiterKnowledge.availability, [action('View résumé','DAndre_Knight_R.pdf'), action('Contact D\'Andre','#contact',false)], 'roles');
+        if (includesAny(q, ['experience','professional experience','job shadow','arpia'])) return result(recruiterKnowledge.experience, [action('View résumé','DAndre_Knight_R.pdf')], 'experience');
+        if (includesAny(q, ['project','portfolio','built','work'])) return result(recruiterKnowledge.projects, [action('Explore projects','#work',false), action('View GitHub','https://github.com/dandrek123')], 'projects');
         if (includesAny(q, ['contact','email','linkedin','reach','hire'])) return result(recruiterKnowledge.contact, [action('Email D\'Andre','#contact',false), action('LinkedIn','https://www.linkedin.com/in/d%E2%80%99andre-knight-358836251'), action('View résumé','DAndre_Knight_R.pdf')]);
         if (includesAny(q, ['github','repository','repo','source code'])) return result(recruiterKnowledge.github, [action('Open GitHub','https://github.com/dandrek123')]);
         if (includesAny(q, ['spanish','english','bilingual','language'])) return result(recruiterKnowledge.languages, [action('View résumé','DAndre_Knight_R.pdf')]);
         if (includesAny(q, ['who is','tell me about dandre','summary','overview','background'])) return result(recruiterKnowledge.summary, [action('View résumé','DAndre_Knight_R.pdf'), action('Explore projects','#work',false)]);
+        if (conversationState.lastTopic && topicDetails[conversationState.lastTopic]) {
+          return result(
+            `I may not have understood the exact wording. The current topic is ${conversationState.lastTopic}. ${topicDetails[conversationState.lastTopic]}`,
+            [action('Explore projects','#work',false), action('View résumé','DAndre_Knight_R.pdf')],
+            conversationState.lastTopic
+          );
+        }
         return result("I don't have verified information for that question. Try asking about D'Andre's skills, projects, education, experience, citizenship, relocation, or the roles he is seeking.", [action('View résumé','DAndre_Knight_R.pdf'), action('Explore projects','#work',false)]);
+      };
+
+      const splitRecruiterQuestions = raw => {
+        const cleaned = String(raw || '').trim();
+        if (!cleaned) return [];
+
+        const normalizedSeparators = cleaned
+          .replace(/\n+/g, '? ')
+          .replace(/;+\s*/g, '? ')
+          .replace(/\s+(?:and|also)\s+(?=(?:what|which|where|when|why|how|does|do|did|is|are|can|could|would|tell|give|show)\b)/gi, '? ');
+
+        const pieces = normalizedSeparators
+          .split(/\?+/)
+          .map(part => part.trim())
+          .filter(Boolean);
+
+        return pieces.length ? pieces : [cleaned];
+      };
+
+      const getRecruiterAnswer = raw => {
+        const questions = splitRecruiterQuestions(raw);
+        if (questions.length <= 1) return getSingleRecruiterAnswer(questions[0] || raw);
+
+        const answers = questions.map(question => ({
+          question,
+          answer: getSingleRecruiterAnswer(question)
+        }));
+
+        const combinedText = answers
+          .map((item, index) => `${index + 1}. ${item.answer.text}`)
+          .join('\n\n');
+
+        const combinedActions = [];
+        const seenActions = new Set();
+        answers.forEach(({ answer }) => {
+          (answer.actions || []).forEach(item => {
+            const key = `${item.label}|${item.href}`;
+            if (!seenActions.has(key)) {
+              seenActions.add(key);
+              combinedActions.push(item);
+            }
+          });
+        });
+
+        const lastTopic = [...answers].reverse().find(item => item.answer.topic)?.answer.topic || '';
+        return {
+          text: combinedText,
+          actions: combinedActions.slice(0, 4),
+          topic: lastTopic
+        };
       };
 
       const setAssistant = open => {
@@ -2062,13 +2608,74 @@ warrior <span class="op">=</span> <span class="str">"D'Andre"</span>
         if (!clean) return;
         addAiMessage(clean, 'user');
         const answer = getRecruiterAnswer(clean);
+        if (answer.topic) conversationState.lastTopic = answer.topic;
+        conversationState.lastAnswer = answer.text || '';
         setTimeout(() => addAiMessage(answer, 'bot'), 260);
       };
       aiLauncher?.addEventListener('click', event => { event.stopPropagation(); setAssistant(!aiAssistant?.classList.contains('is-open')); });
       aiClose?.addEventListener('click', () => { setAssistant(false); aiLauncher?.focus(); });
       aiAssistant?.addEventListener('click', event => event.stopPropagation());
       aiForm?.addEventListener('submit', event => { event.preventDefault(); if (!aiInput) return; askAssistant(aiInput.value); aiInput.value=''; });
-      document.querySelectorAll('.ai-chip').forEach(chip => chip.addEventListener('click', () => askAssistant(chip.textContent || '')));
+
+      const rebuiltSuggestions = document.getElementById('aiSuggestions');
+      if (rebuiltSuggestions) {
+        let pointerDown = false;
+        let startX = 0;
+        let startScroll = 0;
+        let moved = false;
+
+        rebuiltSuggestions.addEventListener('pointerdown', event => {
+          if (event.pointerType === 'mouse' && event.button !== 0) return;
+          pointerDown = true;
+          moved = false;
+          startX = event.clientX;
+          startScroll = rebuiltSuggestions.scrollLeft;
+          rebuiltSuggestions.classList.add('is-dragging');
+        });
+
+        rebuiltSuggestions.addEventListener('pointermove', event => {
+          if (!pointerDown) return;
+          const delta = event.clientX - startX;
+          if (Math.abs(delta) > 6) moved = true;
+          rebuiltSuggestions.scrollLeft = startScroll - delta;
+        });
+
+        const finishSuggestionPointer = event => {
+          if (!pointerDown) return;
+          pointerDown = false;
+          rebuiltSuggestions.classList.remove('is-dragging');
+
+          const chip = event.target.closest('.ai-chip');
+          if (chip && !moved) {
+            askAssistant(chip.textContent || '');
+          }
+          moved = false;
+        };
+
+        rebuiltSuggestions.addEventListener('pointerup', finishSuggestionPointer);
+        rebuiltSuggestions.addEventListener('pointercancel', () => {
+          pointerDown = false;
+          moved = false;
+          rebuiltSuggestions.classList.remove('is-dragging');
+        });
+
+        rebuiltSuggestions.addEventListener('keydown', event => {
+          const chip = event.target.closest('.ai-chip');
+          if (chip && (event.key === 'Enter' || event.key === ' ')) {
+            event.preventDefault();
+            askAssistant(chip.textContent || '');
+          }
+        });
+      }
+      document.addEventListener('pointerdown', event => {
+        if (!aiAssistant?.classList.contains('is-open')) return;
+        const clickedInsideAssistant = aiAssistant.contains(event.target);
+        const clickedLauncher = aiLauncher?.contains(event.target);
+        if (!clickedInsideAssistant && !clickedLauncher) {
+          setAssistant(false);
+        }
+      });
+
       document.addEventListener('keydown', event => {
         if (event.key === 'Escape' && aiAssistant?.classList.contains('is-open')) { setAssistant(false); aiLauncher?.focus(); }
       });
