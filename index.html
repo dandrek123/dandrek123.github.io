@@ -228,6 +228,486 @@
       transition: background .2s, transform .2s;
     }
     .nav-cta:hover { background: var(--acid); }
+
+    .recruiter-mode-toggle {
+      appearance: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      min-height: 42px;
+      padding: 0 13px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      color: var(--muted);
+      background: rgba(255,255,255,.035);
+      font: inherit;
+      font-size: .72rem;
+      font-weight: 850;
+      cursor: pointer;
+      transition: color .2s, border-color .2s, background .2s, transform .2s;
+    }
+    .recruiter-mode-toggle:hover { color: var(--text); border-color: var(--line-strong); transform: translateY(-1px); }
+    .recruiter-mode-toggle i {
+      position: relative;
+      width: 30px;
+      height: 17px;
+      flex: 0 0 auto;
+      border-radius: 999px;
+      background: #292c35;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.06);
+      transition: background .24s;
+    }
+    .recruiter-mode-toggle i::after {
+      content: "";
+      position: absolute;
+      width: 11px;
+      height: 11px;
+      left: 3px;
+      top: 3px;
+      border-radius: 50%;
+      background: #8f929c;
+      transition: transform .24s var(--ease), background .24s;
+    }
+    .recruiter-mode-toggle[aria-pressed="true"] { color: #071000; border-color: var(--acid); background: var(--acid); }
+    .recruiter-mode-toggle[aria-pressed="true"] i { background: rgba(7,16,0,.25); }
+    .recruiter-mode-toggle[aria-pressed="true"] i::after { transform: translateX(13px); background: #071000; }
+
+    .recruiter-banner {
+      position: fixed;
+      left: 50%;
+      top: calc(var(--nav-h) + 15px);
+      z-index: 88;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      width: min(690px, calc(100% - 30px));
+      padding: 11px 14px;
+      border: 1px solid rgba(185,255,57,.28);
+      border-radius: 999px;
+      color: #dfffb0;
+      background: rgba(9,14,7,.88);
+      box-shadow: 0 18px 50px rgba(0,0,0,.28);
+      backdrop-filter: blur(18px);
+      opacity: 0;
+      pointer-events: none;
+      transform: translate(-50%, -12px);
+      transition: opacity .3s, transform .3s;
+    }
+    .recruiter-banner strong { color: var(--acid); font-size: .72rem; white-space: nowrap; }
+    .recruiter-banner span { min-width: 0; color: #c5cabd; font-size: .68rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .recruiter-banner a { margin-left: auto; color: var(--acid); font-size: .68rem; font-weight: 900; white-space: nowrap; }
+
+    /* Command palette */
+    .command-palette-trigger {
+      appearance: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      min-height: 42px;
+      padding: 0 12px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      color: var(--muted);
+      background: rgba(255,255,255,.035);
+      font: inherit;
+      font-size: .7rem;
+      font-weight: 850;
+      cursor: pointer;
+      transition: color .2s, border-color .2s, background .2s, transform .2s;
+    }
+    .command-palette-trigger:hover {
+      color: var(--text);
+      border-color: var(--line-strong);
+      background: rgba(255,255,255,.055);
+      transform: translateY(-1px);
+    }
+    .command-palette-trigger kbd {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 30px;
+      height: 23px;
+      padding: 0 6px;
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 7px;
+      color: #d9dbe2;
+      background: rgba(0,0,0,.24);
+      font: inherit;
+      font-size: .6rem;
+      font-weight: 900;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.03);
+    }
+    .command-palette-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 120;
+      display: grid;
+      place-items: start center;
+      padding: min(13vh, 110px) 18px 28px;
+      background: rgba(2,4,8,.72);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transition: opacity .22s, visibility .22s;
+    }
+    .command-palette-backdrop.is-open {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+    }
+    .command-palette {
+      width: min(720px, 100%);
+      max-height: min(76vh, 760px);
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,.13);
+      border-radius: 28px;
+      background:
+        radial-gradient(circle at 12% 0%, rgba(185,255,57,.09), transparent 17rem),
+        linear-gradient(180deg, rgba(17,20,27,.99), rgba(7,9,14,.995));
+      box-shadow:
+        0 34px 100px rgba(0,0,0,.62),
+        inset 0 1px 0 rgba(255,255,255,.045);
+      transform: translateY(-14px) scale(.985);
+      transition: transform .24s var(--ease);
+    }
+    .command-palette-backdrop.is-open .command-palette {
+      transform: translateY(0) scale(1);
+    }
+    .command-palette-head {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+      padding: 16px 18px;
+      border-bottom: 1px solid var(--line);
+    }
+    .command-palette-search-icon {
+      color: var(--acid);
+      font-size: 1.05rem;
+      font-weight: 900;
+    }
+    .command-palette-input {
+      flex: 1;
+      min-width: 0;
+      border: 0;
+      color: var(--text);
+      background: transparent;
+      outline: none;
+      font: inherit;
+      font-size: .94rem;
+      font-weight: 750;
+    }
+    .command-palette-input::placeholder { color: #6f727d; }
+    .command-palette-close {
+      appearance: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 42px;
+      height: 32px;
+      padding: 0 9px;
+      border: 1px solid var(--line);
+      border-radius: 9px;
+      color: var(--muted);
+      background: rgba(255,255,255,.03);
+      font: inherit;
+      font-size: .62rem;
+      font-weight: 900;
+      cursor: pointer;
+    }
+    .command-palette-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 10px 18px;
+      border-bottom: 1px solid var(--line);
+      color: var(--faint);
+      font-size: .62rem;
+      font-weight: 800;
+      letter-spacing: .04em;
+    }
+    .command-palette-list {
+      max-height: min(58vh, 570px);
+      padding: 9px;
+      overflow-y: auto;
+    }
+    .command-palette-list::-webkit-scrollbar { width: 9px; }
+    .command-palette-list::-webkit-scrollbar-track { background: transparent; }
+    .command-palette-list::-webkit-scrollbar-thumb {
+      border: 2px solid transparent;
+      border-radius: 999px;
+      background: rgba(255,255,255,.16);
+      background-clip: padding-box;
+    }
+    .command-group-label {
+      padding: 12px 11px 7px;
+      color: #676a74;
+      font-size: .58rem;
+      font-weight: 950;
+      letter-spacing: .11em;
+      text-transform: uppercase;
+    }
+    .command-item {
+      appearance: none;
+      display: grid;
+      grid-template-columns: 42px minmax(0,1fr) auto;
+      align-items: center;
+      gap: 12px;
+      width: 100%;
+      min-height: 58px;
+      padding: 8px 11px;
+      border: 1px solid transparent;
+      border-radius: 15px;
+      color: #dfe1e7;
+      background: transparent;
+      font: inherit;
+      text-align: left;
+      cursor: pointer;
+      transition: color .16s, background .16s, border-color .16s, transform .16s;
+    }
+    .command-item:hover,
+    .command-item.is-active {
+      color: #071000;
+      background: var(--acid);
+      border-color: var(--acid);
+      transform: translateX(2px);
+    }
+    .command-item-icon {
+      display: grid;
+      place-items: center;
+      width: 38px;
+      height: 38px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      color: var(--acid);
+      background: rgba(255,255,255,.035);
+      font-size: .72rem;
+      font-weight: 950;
+    }
+    .command-item:hover .command-item-icon,
+    .command-item.is-active .command-item-icon {
+      color: #071000;
+      border-color: rgba(7,16,0,.2);
+      background: rgba(7,16,0,.08);
+    }
+    .command-item-copy { min-width: 0; }
+    .command-item-title {
+      display: block;
+      overflow: hidden;
+      font-size: .78rem;
+      font-weight: 900;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .command-item-subtitle {
+      display: block;
+      margin-top: 3px;
+      overflow: hidden;
+      color: #8d9099;
+      font-size: .63rem;
+      font-weight: 650;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .command-item:hover .command-item-subtitle,
+    .command-item.is-active .command-item-subtitle { color: rgba(7,16,0,.68); }
+    .command-item-key {
+      color: #696c76;
+      font-size: .58rem;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+    .command-item:hover .command-item-key,
+    .command-item.is-active .command-item-key { color: rgba(7,16,0,.65); }
+    .command-empty {
+      padding: 42px 18px;
+      color: var(--muted);
+      font-size: .76rem;
+      line-height: 1.6;
+      text-align: center;
+    }
+    body.command-palette-open { overflow: hidden; }
+
+    /* Keyboard shortcut guide */
+    .shortcut-guide {
+      position: fixed;
+      left: 18px;
+      bottom: 18px;
+      z-index: 82;
+      width: 260px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 20px;
+      background:
+        linear-gradient(180deg, rgba(16,19,26,.97), rgba(8,10,15,.97));
+      box-shadow:
+        0 22px 60px rgba(0,0,0,.34),
+        inset 0 1px 0 rgba(255,255,255,.035);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(12px);
+      transition:
+        width .28s var(--ease),
+        opacity .25s,
+        visibility .25s,
+        transform .28s var(--ease);
+    }
+    .shortcut-guide.is-visible {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+    .shortcut-guide.is-collapsed {
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      cursor: pointer;
+    }
+    .shortcut-guide-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      min-height: 46px;
+      padding: 0 13px;
+      border-bottom: 1px solid var(--line);
+    }
+    .shortcut-guide-title {
+      color: #e3e5eb;
+      font-size: .68rem;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+    .shortcut-guide-toggle {
+      appearance: none;
+      display: grid;
+      place-items: center;
+      width: 28px;
+      height: 28px;
+      flex: 0 0 auto;
+      border: 1px solid var(--line);
+      border-radius: 50%;
+      color: var(--acid);
+      background: rgba(255,255,255,.03);
+      font: inherit;
+      font-size: .7rem;
+      font-weight: 950;
+      cursor: pointer;
+    }
+    .shortcut-guide-body {
+      display: grid;
+      gap: 7px;
+      padding: 11px 13px 13px;
+      transition: opacity .18s;
+    }
+    .shortcut-guide-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      color: #a9acb5;
+      font-size: .63rem;
+      font-weight: 750;
+    }
+    .shortcut-guide-row kbd {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 28px;
+      height: 24px;
+      padding: 0 6px;
+      border: 1px solid rgba(255,255,255,.11);
+      border-radius: 7px;
+      color: #eef0f4;
+      background: rgba(255,255,255,.045);
+      font: inherit;
+      font-size: .6rem;
+      font-weight: 950;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.025);
+    }
+    .shortcut-guide.is-collapsed .shortcut-guide-head {
+      justify-content: center;
+      min-height: 46px;
+      padding: 0;
+      border-bottom: 0;
+    }
+    .shortcut-guide.is-collapsed .shortcut-guide-title,
+    .shortcut-guide.is-collapsed .shortcut-guide-body {
+      display: none;
+    }
+    .shortcut-guide.is-collapsed .shortcut-guide-toggle {
+      width: 46px;
+      height: 46px;
+      border: 0;
+      background: transparent;
+      font-size: .78rem;
+    }
+
+    @media (max-width: 760px) {
+      .shortcut-guide { display: none; }
+    }
+
+    @media (max-width: 1080px) {
+      .command-palette-trigger span { display: none; }
+    }
+    @media (max-width: 760px) {
+      .command-palette-trigger {
+        position: fixed;
+        left: 14px;
+        bottom: 96px;
+        z-index: 86;
+        min-height: 46px;
+        box-shadow: 0 12px 34px rgba(0,0,0,.28);
+      }
+      .command-palette-trigger span { display: inline; }
+      .command-palette-backdrop { padding: 70px 10px 14px; }
+      .command-palette { border-radius: 22px; }
+      .command-palette-meta span:last-child { display: none; }
+    }
+    body.recruiter-mode .recruiter-banner { opacity: 1; pointer-events: auto; transform: translate(-50%, 0); }
+
+    body.recruiter-mode .hero-copy strong { color: var(--acid); }
+    body.recruiter-mode .hero-eyebrow::after {
+      content: "Recruiter view";
+      margin-left: 10px;
+      padding: 5px 9px;
+      border: 1px solid rgba(185,255,57,.35);
+      border-radius: 999px;
+      color: var(--acid);
+      font-size: .58rem;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+    body.recruiter-mode #about,
+    body.recruiter-mode #journey { display: none; }
+    body.recruiter-mode #work,
+    body.recruiter-mode #skills { padding-top: 82px; padding-bottom: 82px; }
+    body.recruiter-mode .project-card:nth-of-type(n+4) { display: none; }
+    body.recruiter-mode .feedback-section { padding-top: 68px; }
+    body.recruiter-mode .footer { padding-top: 84px; }
+    body.recruiter-mode .hero-note { color: #dfffb0; }
+
+    @media (max-width: 1080px) {
+      .recruiter-mode-toggle span { display: none; }
+      .recruiter-mode-toggle { padding-inline: 11px; }
+    }
+    @media (max-width: 760px) {
+      .recruiter-mode-toggle {
+        position: fixed;
+        right: 14px;
+        bottom: 96px;
+        z-index: 86;
+        min-height: 46px;
+        box-shadow: 0 12px 34px rgba(0,0,0,.28);
+      }
+      .recruiter-mode-toggle span { display: inline; }
+      .recruiter-banner { top: 78px; border-radius: 20px; }
+      .recruiter-banner span { display: none; }
+    }
     .status-dot { width: 8px; height: 8px; border-radius: 50%; background: #2ee681; box-shadow: 0 0 0 6px rgba(46,230,129,.12); animation: pulse 2.2s infinite; }
     @keyframes pulse { 50% { box-shadow: 0 0 0 10px rgba(46,230,129,0); } }
 
@@ -383,7 +863,8 @@
       border: 1px solid rgba(255,255,255,.14);
       background: linear-gradient(155deg, rgba(25,28,36,.9), rgba(11,13,18,.82));
       box-shadow: 0 45px 90px rgba(0,0,0,.42), inset 0 1px 0 rgba(255,255,255,.08);
-      backdrop-filter: blur(22px);
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
       transform: rotate(2deg);
       transition: transform .45s var(--ease), border-color .3s;
     }
@@ -478,6 +959,495 @@
       transition: border-color .35s, transform .5s var(--ease), box-shadow .5s;
     }
     .project-card:hover { border-color: rgba(255,255,255,.24); box-shadow: 0 35px 90px rgba(0,0,0,.22); }
+
+    .project-next {
+      position: relative;
+      display: grid;
+      grid-template-columns: auto minmax(0,1fr);
+      gap: 11px;
+      align-items: start;
+      margin: 20px 0 4px;
+      padding: 14px 15px;
+      border: 1px solid rgba(255,255,255,.09);
+      border-radius: 16px;
+      background:
+        linear-gradient(135deg, rgba(185,255,57,.065), rgba(255,255,255,.025));
+      overflow: hidden;
+    }
+    .project-next::after {
+      content: "";
+      position: absolute;
+      inset: auto -25px -34px auto;
+      width: 78px;
+      height: 78px;
+      border-radius: 50%;
+      background: rgba(185,255,57,.07);
+      filter: blur(14px);
+      pointer-events: none;
+    }
+    .project-next-icon {
+      display: grid;
+      place-items: center;
+      width: 27px;
+      height: 27px;
+      border: 1px solid rgba(185,255,57,.28);
+      border-radius: 9px;
+      color: var(--acid);
+      background: rgba(185,255,57,.07);
+      font-size: .7rem;
+      font-weight: 950;
+    }
+    .project-next-copy {
+      position: relative;
+      z-index: 1;
+      min-width: 0;
+    }
+    .project-next-copy strong {
+      display: block;
+      margin-bottom: 4px;
+      color: var(--acid);
+      font-size: .61rem;
+      font-weight: 950;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+    }
+    .project-next-copy p {
+      margin: 0;
+      color: #b8bbc4;
+      font-size: .7rem;
+      line-height: 1.55;
+    }
+
+    /* Interactive project comparison */
+    .compare-section {
+      padding-top: 36px;
+      padding-bottom: 120px;
+    }
+    .compare-shell {
+      position: relative;
+      overflow: visible;
+      padding: clamp(24px, 4.5vw, 54px);
+      border: 1px solid var(--line);
+      border-radius: 36px;
+      background:
+        radial-gradient(circle at 10% 10%, rgba(104,228,255,.10), transparent 22rem),
+        radial-gradient(circle at 90% 92%, rgba(168,135,255,.09), transparent 23rem),
+        linear-gradient(145deg, rgba(16,19,26,.94), rgba(7,9,14,.98));
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.04), 0 34px 90px rgba(0,0,0,.18);
+    }
+    .compare-shell::after {
+      content: "VS";
+      position: absolute;
+      right: -8px;
+      top: -65px;
+      color: transparent;
+      -webkit-text-stroke: 1px rgba(255,255,255,.035);
+      font-size: clamp(9rem, 22vw, 18rem);
+      font-weight: 950;
+      letter-spacing: -.12em;
+      pointer-events: none;
+    }
+    .compare-head {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: end;
+      gap: 30px;
+      margin-bottom: 34px;
+    }
+    .compare-title {
+      max-width: 780px;
+      margin: 0;
+      font-size: clamp(2.6rem, 5vw, 5.3rem);
+      line-height: .94;
+      letter-spacing: -.06em;
+    }
+    .compare-intro {
+      max-width: 670px;
+      margin: 17px 0 0;
+      color: var(--muted);
+      font-size: .94rem;
+      line-height: 1.7;
+    }
+    .compare-reset {
+      appearance: none;
+      min-height: 44px;
+      padding: 0 15px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      color: var(--muted);
+      background: rgba(255,255,255,.03);
+      font: inherit;
+      font-size: .7rem;
+      font-weight: 850;
+      cursor: pointer;
+      transition: color .2s, border-color .2s, transform .2s;
+    }
+    .compare-reset:hover {
+      color: var(--text);
+      border-color: var(--line-strong);
+      transform: translateY(-1px);
+    }
+    .compare-controls {
+      position: relative;
+      z-index: 20;
+      display: grid;
+      grid-template-columns: minmax(0,1fr) 46px minmax(0,1fr);
+      align-items: end;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+    .compare-picker {
+      display: grid;
+      gap: 8px;
+    }
+    .compare-picker label {
+      color: #bfc1ca;
+      font-size: .67rem;
+      font-weight: 900;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+    .compare-picker {
+      position: relative;
+      display: grid;
+      gap: 8px;
+    }
+    .compare-picker label {
+      color: #bfc1ca;
+      font-size: .67rem;
+      font-weight: 900;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+    .compare-dropdown {
+      position: relative;
+      z-index: 30;
+    }
+    .compare-dropdown-button {
+      appearance: none;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      width: 100%;
+      height: 56px;
+      padding: 0 16px;
+      border: 1px solid rgba(255,255,255,.13);
+      border-radius: 17px;
+      color: #f4f5f8;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.065), rgba(255,255,255,.035));
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.035),
+        0 10px 24px rgba(0,0,0,.12);
+      font: inherit;
+      font-size: .84rem;
+      font-weight: 850;
+      text-align: left;
+      cursor: pointer;
+      transition:
+        border-color .2s,
+        background .2s,
+        box-shadow .2s,
+        transform .2s;
+    }
+    .compare-dropdown-button:hover {
+      border-color: rgba(185,255,57,.34);
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.085), rgba(255,255,255,.045));
+    }
+    .compare-dropdown-button[aria-expanded="true"] {
+      border-color: rgba(185,255,57,.72);
+      box-shadow:
+        0 0 0 3px rgba(185,255,57,.09),
+        0 16px 35px rgba(0,0,0,.2);
+    }
+    .compare-dropdown-arrow {
+      width: 9px;
+      height: 9px;
+      flex: 0 0 auto;
+      border-right: 2px solid var(--acid);
+      border-bottom: 2px solid var(--acid);
+      transform: translateY(-2px) rotate(45deg);
+      transition: transform .22s var(--ease);
+    }
+    .compare-dropdown-button[aria-expanded="true"] .compare-dropdown-arrow {
+      transform: translateY(2px) rotate(225deg);
+    }
+    .compare-dropdown-menu {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: calc(100% + 8px);
+      z-index: 999;
+      display: grid;
+      gap: 4px;
+      max-height: 310px;
+      padding: 8px;
+      overflow-y: auto;
+      border: 1px solid rgba(255,255,255,.13);
+      border-radius: 18px;
+      background: #0b0e14;
+      box-shadow:
+        0 26px 70px rgba(0,0,0,.48),
+        inset 0 1px 0 rgba(255,255,255,.04);
+      backdrop-filter: blur(22px);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-8px) scale(.985);
+      transform-origin: top center;
+      transition:
+        opacity .18s,
+        visibility .18s,
+        transform .22s var(--ease);
+    }
+    .compare-dropdown-menu.is-open {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0) scale(1);
+      pointer-events: auto;
+    }
+    .compare-dropdown-menu:not(.is-open) {
+      pointer-events: none;
+    }
+    .compare-picker:focus-within,
+    .compare-dropdown:has(.compare-dropdown-menu.is-open) {
+      z-index: 1000;
+    }
+    .compare-dropdown-option {
+      appearance: none;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      width: 100%;
+      min-height: 46px;
+      padding: 0 12px;
+      border: 1px solid transparent;
+      border-radius: 12px;
+      color: #d7d9e0;
+      background: transparent;
+      font: inherit;
+      font-size: .78rem;
+      font-weight: 800;
+      text-align: left;
+      cursor: pointer;
+      transition:
+        color .18s,
+        background .18s,
+        border-color .18s,
+        transform .18s;
+    }
+    .compare-dropdown-option:hover,
+    .compare-dropdown-option:focus-visible {
+      color: #071000;
+      background: var(--acid);
+      border-color: var(--acid);
+      outline: none;
+      transform: translateX(2px);
+    }
+    .compare-dropdown-option[aria-selected="true"] {
+      color: var(--acid);
+      background: rgba(185,255,57,.08);
+      border-color: rgba(185,255,57,.24);
+    }
+    .compare-dropdown-option[aria-selected="true"]::after {
+      content: "Selected";
+      color: var(--acid);
+      font-size: .56rem;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+    .compare-dropdown-menu::-webkit-scrollbar {
+      width: 8px;
+    }
+    .compare-dropdown-menu::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    .compare-dropdown-menu::-webkit-scrollbar-thumb {
+      border: 2px solid transparent;
+      border-radius: 999px;
+      background: rgba(255,255,255,.15);
+      background-clip: padding-box;
+    }
+    .compare-vs {
+      display: grid;
+      place-items: center;
+      width: 46px;
+      height: 46px;
+      margin-bottom: 4px;
+      border: 1px solid var(--line);
+      border-radius: 50%;
+      color: var(--acid);
+      background: #0c0f14;
+      font-size: .68rem;
+      font-weight: 950;
+      box-shadow: 0 0 24px rgba(185,255,57,.08);
+    }
+    .compare-grid {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0,1fr));
+      gap: 14px;
+    }
+    .compare-card {
+      min-width: 0;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 25px;
+      background: rgba(5,7,11,.68);
+    }
+    .compare-card-head {
+      position: relative;
+      min-height: 180px;
+      padding: 25px;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 80% 10%, var(--compare-glow, rgba(104,228,255,.17)), transparent 13rem),
+        linear-gradient(145deg, rgba(255,255,255,.045), transparent);
+    }
+    .compare-card-head::after {
+      content: attr(data-code);
+      position: absolute;
+      right: 17px;
+      bottom: -24px;
+      color: transparent;
+      -webkit-text-stroke: 1px rgba(255,255,255,.055);
+      font-size: 5.8rem;
+      font-weight: 950;
+      letter-spacing: -.09em;
+      pointer-events: none;
+    }
+    .compare-index {
+      display: block;
+      margin-bottom: 18px;
+      color: var(--compare-accent, var(--cyan));
+      font-size: .62rem;
+      font-weight: 950;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+    .compare-name {
+      position: relative;
+      z-index: 1;
+      margin: 0;
+      max-width: 460px;
+      font-size: clamp(2rem, 3.4vw, 3.6rem);
+      line-height: .92;
+      letter-spacing: -.055em;
+    }
+    .compare-category {
+      position: relative;
+      z-index: 1;
+      margin: 13px 0 0;
+      color: var(--muted);
+      font-size: .73rem;
+      font-weight: 750;
+    }
+    .compare-rows {
+      display: grid;
+    }
+    .compare-row {
+      display: grid;
+      grid-template-columns: 118px minmax(0,1fr);
+      gap: 16px;
+      min-height: 93px;
+      padding: 19px 22px;
+      border-top: 1px solid var(--line);
+    }
+    .compare-row dt {
+      color: var(--faint);
+      font-size: .63rem;
+      font-weight: 900;
+      letter-spacing: .08em;
+      line-height: 1.45;
+      text-transform: uppercase;
+    }
+    .compare-row dd {
+      margin: 0;
+      color: #d4d6dd;
+      font-size: .76rem;
+      line-height: 1.6;
+    }
+    .compare-stack {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .compare-stack span {
+      padding: 5px 8px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      color: #c9cbd3;
+      background: rgba(255,255,255,.03);
+      font-size: .62rem;
+      font-weight: 800;
+    }
+    .compare-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      color: #d8f7df;
+      font-weight: 850;
+    }
+    .compare-status::before {
+      content: "";
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--acid);
+      box-shadow: 0 0 12px rgba(185,255,57,.35);
+    }
+    .compare-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      color: var(--compare-accent, var(--cyan));
+      font-weight: 900;
+    }
+    .compare-link.is-private {
+      color: var(--muted);
+      cursor: default;
+    }
+    .compare-change {
+      animation: compareCardIn .32s var(--ease);
+    }
+    @keyframes compareCardIn {
+      from { opacity: .45; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    body.recruiter-mode .compare-section {
+      padding-top: 12px;
+      padding-bottom: 88px;
+    }
+
+    @media (max-width: 820px) {
+      .compare-head { grid-template-columns: 1fr; }
+      .compare-reset { justify-self: start; }
+      .compare-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 620px) {
+      .compare-section { padding-top: 20px; padding-bottom: 76px; }
+      .compare-shell { padding: 24px 15px; border-radius: 28px; }
+      .compare-controls {
+        grid-template-columns: 1fr;
+        align-items: stretch;
+      }
+      .compare-vs {
+        margin: -4px auto;
+      }
+      .compare-card-head { min-height: 155px; padding: 22px 18px; }
+      .compare-row {
+        grid-template-columns: 1fr;
+        gap: 7px;
+        min-height: auto;
+        padding: 17px 18px;
+      }
+    }
     .project-content { padding: clamp(32px, 5vw, 64px); display: flex; flex-direction: column; }
     .project-number { color: var(--faint); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .78rem; letter-spacing: .12em; }
     .project-title { margin: auto 0 20px; font-size: clamp(3rem, 5.3vw, 5.8rem); line-height: .88; letter-spacing: -.065em; }
@@ -1243,7 +2213,7 @@
       .tech-list li::after { display:none; }
     }
 
-    /* Rebuilt portfolio assistant */
+    /* portfolio assistant */
     .ai-launcher {
       position: fixed;
       right: 24px;
@@ -1675,12 +2645,58 @@
         <a class="hover-target" href="#about">About</a>
         <a class="hover-target" href="#skills">Skills</a>
       </nav>
+      <button class="command-palette-trigger hover-target" id="commandPaletteTrigger" type="button" aria-haspopup="dialog" aria-controls="commandPaletteBackdrop">
+        <span>Quick search</span>
+        <kbd>⌘ K</kbd>
+      </button>
+      <button class="recruiter-mode-toggle hover-target" id="recruiterModeToggle" type="button" aria-pressed="false" aria-label="Toggle recruiter mode">
+        <i aria-hidden="true"></i>
+        <span>Recruiter mode</span>
+      </button>
       <button class="nav-cta magnetic hover-target availability-toggle" type="button" aria-expanded="false" aria-controls="availabilityPanel">
         <span class="status-dot" aria-hidden="true"></span>
         Available for opportunities
       </button>
     </div>
   </header>
+
+  <aside class="shortcut-guide" id="shortcutGuide" aria-label="Keyboard shortcuts">
+    <div class="shortcut-guide-head">
+      <span class="shortcut-guide-title">Keyboard shortcuts</span>
+      <button class="shortcut-guide-toggle" id="shortcutGuideToggle" type="button" aria-expanded="true" aria-label="Collapse keyboard shortcut guide">?</button>
+    </div>
+    <div class="shortcut-guide-body">
+      <div class="shortcut-guide-row"><span>Quick search</span><kbd>⌘ K</kbd></div>
+      <div class="shortcut-guide-row"><span>Ask Bit</span><kbd>B</kbd></div>
+      <div class="shortcut-guide-row"><span>Open résumé</span><kbd>R</kbd></div>
+      <div class="shortcut-guide-row"><span>Contact</span><kbd>C</kbd></div>
+      <div class="shortcut-guide-row"><span>Feedback</span><kbd>F</kbd></div>
+      <div class="shortcut-guide-row"><span>Back to top</span><kbd>T</kbd></div>
+      <div class="shortcut-guide-row"><span>Close panel</span><kbd>Esc</kbd></div>
+    </div>
+  </aside>
+
+  <div class="command-palette-backdrop" id="commandPaletteBackdrop" role="dialog" aria-modal="true" aria-labelledby="commandPaletteTitle">
+    <div class="command-palette">
+      <div class="command-palette-head">
+        <span class="command-palette-search-icon" aria-hidden="true">⌕</span>
+        <input class="command-palette-input" id="commandPaletteInput" type="text" autocomplete="off" spellcheck="false" placeholder="Search projects, sections, or actions..." aria-label="Search portfolio commands">
+        <button class="command-palette-close" id="commandPaletteClose" type="button">ESC</button>
+      </div>
+      <div class="command-palette-meta">
+        <span id="commandPaletteTitle">Portfolio command palette</span>
+        <span>↑↓ navigate · Enter select</span>
+      </div>
+      <div class="command-palette-list" id="commandPaletteList"></div>
+    </div>
+  </div>
+
+  <div class="recruiter-banner" id="recruiterBanner" aria-live="polite">
+    <strong>Recruiter mode active</strong>
+    <span>Showing the fastest path to qualifications, projects, résumé, and contact.</span>
+    <a href="DAndre_Knight_R.pdf" target="_blank" rel="noopener noreferrer">Open résumé ↗</a>
+  </div>
+
 
 
   <aside class="availability-panel" id="availabilityPanel" aria-hidden="true">
@@ -1859,6 +2875,10 @@
               <h3 class="project-title">Athena<br><span class="serif cyan">Voice Bot</span></h3>
               <p class="project-desc">An AI-powered healthcare patient simulator with six conversation workflows, live voice handling, automated transcripts, quality scoring, analytics, search, filtering, and reporting.</p>
               <ul class="tech-list" aria-label="Technologies"><li tabindex="0" data-used="Core backend logic, scenario handling, transcript analysis, and testing in Athena.">Python</li><li tabindex="0" data-used="Runs Athena’s dashboard, routes, and REST webhook endpoints.">Flask</li><li tabindex="0" data-used="Generates context-aware patient conversations and automated analysis.">Gemini</li><li tabindex="0" data-used="Handles live voice calls and healthcare conversation workflows.">Twilio</li><li tabindex="0" data-used="Stores calls, transcripts, analytics, warnings, and scenario results.">SQLite</li></ul>
+              <div class="project-next">
+                <span class="project-next-icon" aria-hidden="true">↗</span>
+                <div class="project-next-copy"><strong>Next improvement</strong><p>Add automated conversation regression tests and stronger intent validation across every healthcare workflow.</p></div>
+              </div>
               <div class="project-actions"><a class="project-link hover-target" href="https://github.com/dandrek123/athena-voice-bot" target="_blank" rel="noopener noreferrer">View on GitHub <span class="circle-arrow">↗</span></a><button class="gallery-link hover-target" type="button" data-gallery="athena">View 3 real screens</button></div>
             </div>
             <div class="project-visual athena-visual">
@@ -1880,6 +2900,10 @@
               <h3 class="project-title">Mission<br><span class="serif acid">Shield</span></h3>
               <p class="project-desc">A defense-style readiness dashboard that tracks mission systems, cyber incidents, severity, operational risk, response actions, and live filtering through a React and Express stack.</p>
               <ul class="tech-list" aria-label="Technologies"><li tabindex="0" data-used="Builds MissionShield’s dashboard, forms, filters, and system views.">React</li><li tabindex="0" data-used="Runs the MissionShield server and application logic.">Node.js</li><li tabindex="0" data-used="Provides API routes for systems, incidents, and readiness data.">Express</li><li tabindex="0" data-used="Stores mission systems, incidents, severity, status, and actions.">SQLite</li><li tabindex="0" data-used="Powers dashboard interactions, filtering, forms, and state changes.">JavaScript</li></ul>
+              <div class="project-next">
+                <span class="project-next-icon" aria-hidden="true">↗</span>
+                <div class="project-next-copy"><strong>Next improvement</strong><p>Add role-based access, live event streaming, and automated incident escalation rules.</p></div>
+              </div>
               <div class="project-actions"><a class="project-link hover-target" href="https://github.com/dandrek123/MissionShield" target="_blank" rel="noopener noreferrer">View on GitHub <span class="circle-arrow">↗</span></a><button class="gallery-link hover-target" type="button" data-gallery="mission">View 2 real screens</button></div>
             </div>
             <div class="project-visual shield-visual">
@@ -1901,6 +2925,10 @@
               <h3 class="project-title">Knight<br><span class="serif" style="color:var(--violet)">Lang</span></h3>
               <p class="project-desc">A custom interpreted programming language designed from scratch in Python, complete with a lexer, parser, abstract syntax tree, interpreter, functions, control flow, strings, and indentation-based blocks.</p>
               <ul class="tech-list" aria-label="Technologies"><li tabindex="0" data-used="Implements the complete KnightLang language toolchain.">Python</li><li tabindex="0" data-used="Turns source code into tokens that KnightLang can understand.">Lexer</li><li tabindex="0" data-used="Converts tokens into valid language structures and expressions.">Parser</li><li tabindex="0" data-used="Represents KnightLang programs as an abstract syntax tree.">AST</li><li tabindex="0" data-used="Executes variables, functions, loops, conditionals, and expressions.">Interpreter</li></ul>
+              <div class="project-next">
+                <span class="project-next-icon" aria-hidden="true">↗</span>
+                <div class="project-next-copy"><strong>Next improvement</strong><p>Add a module system, richer type checking, and clearer source-level error diagnostics.</p></div>
+              </div>
               <div class="project-actions"><a class="project-link hover-target" href="https://github.com/dandrek123/KnightLang" target="_blank" rel="noopener noreferrer">View on GitHub <span class="circle-arrow">↗</span></a><button class="gallery-link hover-target" type="button" data-gallery="knightlang">View real execution</button></div>
             </div>
             <div class="project-visual lang-visual">
@@ -1928,6 +2956,10 @@ warrior <span class="op">=</span> <span class="str">"D'Andre"</span>
               <h3 class="project-title">Super Bit<br><span class="serif cyan">AI</span></h3>
               <p class="project-desc">A private desktop AI assistant with voice interaction, local LLM workflows, memory, reminders, document analysis, bilingual support, automation helpers, secure owner controls, and approval-based actions.</p>
               <ul class="tech-list" aria-label="Technologies"><li tabindex="0" data-used="Coordinates Super Bit’s assistant logic, tools, memory, and workflows.">Python</li><li tabindex="0" data-used="Enables private on-device reasoning and document interaction.">Local LLMs</li><li tabindex="0" data-used="Supports spoken commands and English/Spanish interaction.">Voice</li><li tabindex="0" data-used="Runs browser, desktop, file, coding, and reminder workflows.">Automation</li><li tabindex="0" data-used="Protects owner-only actions, passwords, and approval-based operations.">Security</li></ul>
+              <div class="project-next">
+                <span class="project-next-icon" aria-hidden="true">↗</span>
+                <div class="project-next-copy"><strong>Next improvement</strong><p>Create a safer plugin permission system with isolated tools, action previews, and auditable approval logs.</p></div>
+              </div>
               <span class="project-link" aria-label="Private local project">Private/local project <span class="circle-arrow">●</span></span>
             </div>
             <div class="project-visual bit-visual" aria-hidden="true">
@@ -1944,6 +2976,10 @@ warrior <span class="op">=</span> <span class="str">"D'Andre"</span>
               <h3 class="project-title">Meal<br><span class="serif" style="color:var(--orange)">Match</span></h3>
               <p class="project-desc">A full-stack meal discovery platform with user registration, authentication, session management, analytics, administrative tools, and a relational database for meals and accounts.</p>
               <ul class="tech-list" aria-label="Technologies"><li tabindex="0" data-used="Handles MealMatch pages, sessions, matching logic, and admin tools.">PHP</li><li tabindex="0" data-used="Stores users, meals, ingredients, preferences, and activity.">MySQL</li><li tabindex="0" data-used="Queries and manages the relational meal and user data model.">SQL</li><li tabindex="0" data-used="Creates the responsive discovery, login, and administration interface.">HTML/CSS</li><li tabindex="0" data-used="Protects user accounts with registration, login, and session management.">Authentication</li></ul>
+              <div class="project-next">
+                <span class="project-next-icon" aria-hidden="true">↗</span>
+                <div class="project-next-copy"><strong>Next improvement</strong><p>Add preference-based ranking, pantry-aware recommendations, and broader automated backend testing.</p></div>
+              </div>
               <div class="project-actions"><a class="project-link hover-target" href="https://github.com/dandrek123/MealMatch" target="_blank" rel="noopener noreferrer">View on GitHub <span class="circle-arrow">↗</span></a><button class="gallery-link hover-target" type="button" data-gallery="mealmatch">View 3 real screens</button></div>
             </div>
             <div class="project-visual meal-visual"><div class="meal-app"><div class="meal-nav"><div class="meal-logo"><i>✦</i> MealMatch</div><span class="meal-user">DK</span></div><div class="meal-body"><div class="meal-feature"><small>Today’s match</small><h4>Smoky tomato chicken bowl</h4><p>Matched to your saved preferences, available ingredients, and recent activity.</p><div class="plate"></div></div><div class="meal-side"><div class="match-score"><small>MATCH CONFIDENCE</small><b>92%</b><div class="match-bar"></div></div><div class="meal-tags"><strong>Why it fits</strong><span>High protein</span><span>30 min</span><span>Spicy</span><span>Saved</span></div></div></div></div></div></div>
@@ -1955,10 +2991,58 @@ warrior <span class="op">=</span> <span class="str">"D'Andre"</span>
               <h3 class="project-title">Anti-Scam<br><span class="serif" style="color:var(--danger)">Community</span></h3>
               <p class="project-desc">A secure MERN community application for reporting, reviewing, and discussing online scams through authenticated profiles, comments, moderation tools, voting, and forum-style collaboration.</p>
               <ul class="tech-list" aria-label="Technologies"><li tabindex="0" data-used="Stores scam reports, profiles, comments, tags, and community activity.">MongoDB</li><li tabindex="0" data-used="Provides routes for reports, moderation, comments, and profiles.">Express</li><li tabindex="0" data-used="Builds the forum, report feeds, profile screens, and moderation UI.">React</li><li tabindex="0" data-used="Runs the Anti-Scam server and full-stack application logic.">Node.js</li><li tabindex="0" data-used="Secures accounts, profiles, and protected community actions.">Authentication</li></ul>
+              <div class="project-next">
+                <span class="project-next-icon" aria-hidden="true">↗</span>
+                <div class="project-next-copy"><strong>Next improvement</strong><p>Add evidence verification, stronger moderation workflows, and scam-pattern detection to prioritize high-risk reports.</p></div>
+              </div>
               <a class="project-link hover-target" href="https://github.com/dandrek123/Bit_by_Bit" target="_blank" rel="noopener noreferrer">View on GitHub <span class="circle-arrow">↗</span></a>
             </div>
             <div class="project-visual scam-visual" aria-hidden="true"><div class="scam-app"><div class="scam-head"><div class="scam-brand"><i>!</i> ScamWatch Community</div><span class="verified-pill">COMMUNITY VERIFIED</span></div><div class="scam-layout"><div class="report-feed"><div class="report-card"><div class="report-meta"><span>Marketplace report · 4m</span><span class="risk-pill">HIGH RISK</span></div><h4>Fake delivery payment request</h4><p>Seller redirected the conversation and requested payment through an unprotected external link.</p><div class="vote-row"><span>▲ 128 helpful</span><span>24 comments</span></div></div><div class="report-card"><div class="report-meta"><span>Banking alert · 18m</span><span class="risk-pill">PHISHING</span></div><h4>Account verification text</h4><p>Message imitates a bank login page and pressures the recipient to act immediately.</p><div class="vote-row"><span>▲ 86 helpful</span><span>11 comments</span></div></div></div><aside class="safety-panel"><div class="safety-ring"><b>72</b><small>RISK INDEX</small></div><div class="safety-stat"><span>Reports today</span><b>148</b></div><div class="safety-stat"><span>Resolved</span><b>91%</b></div><div class="safety-stat"><span>Active reviewers</span><b>36</b></div></aside></div></div></div>
           </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section compare-section" id="compare">
+      <div class="container">
+        <div class="compare-shell reveal">
+          <div class="compare-head">
+            <div>
+              <p class="section-kicker">Project compare</p>
+              <h2 class="compare-title">See how the work <span class="serif acid">stacks up.</span></h2>
+              <p class="compare-intro">Select any two projects to compare the problem, engineering role, technologies, strongest feature, challenge, lesson, and current status.</p>
+            </div>
+            <button class="compare-reset hover-target" id="compareReset" type="button">Reset comparison</button>
+          </div>
+
+          <div class="compare-controls">
+            <div class="compare-picker">
+              <label id="compareProjectALabel">Project A</label>
+              <div class="compare-dropdown" data-compare-dropdown="a">
+                <button class="compare-dropdown-button" id="compareProjectAButton" type="button" aria-expanded="false" aria-haspopup="listbox" aria-labelledby="compareProjectALabel compareProjectAValue">
+                  <span id="compareProjectAValue">Athena Voice Bot</span>
+                  <span class="compare-dropdown-arrow" aria-hidden="true"></span>
+                </button>
+                <div class="compare-dropdown-menu" id="compareProjectAMenu" role="listbox" aria-labelledby="compareProjectALabel"></div>
+              </div>
+            </div>
+            <span class="compare-vs" aria-hidden="true">VS</span>
+            <div class="compare-picker">
+              <label id="compareProjectBLabel">Project B</label>
+              <div class="compare-dropdown" data-compare-dropdown="b">
+                <button class="compare-dropdown-button" id="compareProjectBButton" type="button" aria-expanded="false" aria-haspopup="listbox" aria-labelledby="compareProjectBLabel compareProjectBValue">
+                  <span id="compareProjectBValue">MissionShield</span>
+                  <span class="compare-dropdown-arrow" aria-hidden="true"></span>
+                </button>
+                <div class="compare-dropdown-menu" id="compareProjectBMenu" role="listbox" aria-labelledby="compareProjectBLabel"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="compare-grid" aria-live="polite">
+            <article class="compare-card" id="compareCardA"></article>
+            <article class="compare-card" id="compareCardB"></article>
+          </div>
         </div>
       </div>
     </section>
@@ -2644,6 +3728,600 @@ warrior <span class="op">=</span> <span class="str">"D'Andre"</span>
         setTimeout(() => copy.textContent = 'Copy email', 2200);
       });
 
+
+
+
+
+
+      // Keyboard shortcut guide.
+      const shortcutGuide = document.getElementById('shortcutGuide');
+      const shortcutGuideToggle = document.getElementById('shortcutGuideToggle');
+      const shortcutGuideStorageKey = 'dandre-shortcut-guide-collapsed';
+
+      function setShortcutGuideCollapsed(collapsed) {
+        shortcutGuide?.classList.toggle('is-collapsed', collapsed);
+        shortcutGuideToggle?.setAttribute('aria-expanded', String(!collapsed));
+        shortcutGuideToggle?.setAttribute(
+          'aria-label',
+          collapsed ? 'Open keyboard shortcut guide' : 'Collapse keyboard shortcut guide'
+        );
+        try {
+          sessionStorage.setItem(shortcutGuideStorageKey, collapsed ? '1' : '0');
+        } catch (_) {}
+      }
+
+      if (shortcutGuide && window.matchMedia('(min-width: 761px)').matches) {
+        let savedCollapsed = false;
+        try {
+          savedCollapsed = sessionStorage.getItem(shortcutGuideStorageKey) === '1';
+        } catch (_) {}
+
+        setTimeout(() => {
+          shortcutGuide.classList.add('is-visible');
+          setShortcutGuideCollapsed(savedCollapsed);
+        }, 900);
+
+        if (!savedCollapsed) {
+          setTimeout(() => setShortcutGuideCollapsed(true), 6500);
+        }
+      }
+
+      shortcutGuideToggle?.addEventListener('click', event => {
+        event.stopPropagation();
+        const collapsed = shortcutGuide.classList.contains('is-collapsed');
+        setShortcutGuideCollapsed(!collapsed);
+      });
+
+      shortcutGuide?.addEventListener('click', () => {
+        if (shortcutGuide.classList.contains('is-collapsed')) {
+          setShortcutGuideCollapsed(false);
+        }
+      });
+
+      // Command palette.
+      const commandPaletteTrigger = document.getElementById('commandPaletteTrigger');
+      const commandPaletteBackdrop = document.getElementById('commandPaletteBackdrop');
+      const commandPaletteInput = document.getElementById('commandPaletteInput');
+      const commandPaletteList = document.getElementById('commandPaletteList');
+      const commandPaletteClose = document.getElementById('commandPaletteClose');
+      let commandPaletteActiveIndex = 0;
+      let commandPaletteFiltered = [];
+
+      const commandPaletteItems = [
+        { group: 'Projects', title: 'Athena Voice Bot', subtitle: 'Healthcare AI, Twilio, Gemini, Flask, and SQLite', icon: 'AI', keywords: 'athena voice bot healthcare python flask gemini twilio sqlite', action: () => scrollToProject('athena') },
+        { group: 'Projects', title: 'MissionShield', subtitle: 'Cyber operations and readiness dashboard', icon: 'SEC', keywords: 'missionshield cyber cybersecurity react node express sqlite', action: () => scrollToProject('mission') },
+        { group: 'Projects', title: 'KnightLang', subtitle: 'Custom programming language and interpreter', icon: 'KL', keywords: 'knightlang language lexer parser ast interpreter python', action: () => scrollToProject('knightlang') },
+        { group: 'Projects', title: 'Super Bit AI', subtitle: 'Private local AI desktop assistant', icon: 'BIT', keywords: 'super bit local llm voice automation python private assistant', action: () => scrollToProject('superbit') },
+        { group: 'Projects', title: 'MealMatch', subtitle: 'PHP and MySQL full-stack application', icon: 'WEB', keywords: 'mealmatch php mysql sql full stack', action: () => scrollToProject('mealmatch') },
+        { group: 'Projects', title: 'Anti-Scam Community', subtitle: 'MERN scam reporting and awareness platform', icon: 'MERN', keywords: 'anti scam community fraud mern mongodb express react node', action: () => scrollToProject('antiscam') },
+
+        { group: 'Navigate', title: 'Project comparison', subtitle: 'Compare any two featured projects', icon: 'VS', keywords: 'compare comparison projects side by side', action: () => goToSection('compare') },
+        { group: 'Navigate', title: 'Skills', subtitle: 'View technical skills and capabilities', icon: '{}', keywords: 'skills technology stack capabilities', action: () => goToSection('skills') },
+        { group: 'Navigate', title: 'About D’Andre', subtitle: 'Background, philosophy, and approach · opens Explorer Mode', icon: 'DK', keywords: 'about background philosophy dandre', action: () => goToSection('about') },
+        { group: 'Navigate', title: 'Contact', subtitle: 'Email, GitHub, LinkedIn, and opportunities', icon: '@', keywords: 'contact email github linkedin opportunity hire', action: () => goToSection('contact') },
+        { group: 'Navigate', title: 'Feedback', subtitle: 'Leave a reaction, rating, or message', icon: '★', keywords: 'feedback rating review reaction message', action: () => goToSection('feedback') },
+
+        { group: 'Actions', title: 'Open résumé', subtitle: 'View D’Andre’s latest résumé', icon: 'PDF', keywords: 'resume résumé cv download', key: 'R', action: () => window.open('DAndre_Knight_R.pdf', '_blank', 'noopener,noreferrer') },
+        { group: 'Actions', title: 'Toggle recruiter mode', subtitle: 'Switch between full and recruiter-focused views', icon: 'REC', keywords: 'recruiter mode hiring view toggle', action: () => recruiterModeToggle?.click() },
+        { group: 'Actions', title: 'Ask Bit', subtitle: 'Open the portfolio assistant', icon: 'BIT', keywords: 'assistant bit ask chat recruiter assistant', key: 'B', action: () => openPortfolioAssistant() },
+        { group: 'Actions', title: 'Back to top', subtitle: 'Return to the beginning of the portfolio', icon: '↑', keywords: 'top home beginning hero', action: () => window.scrollTo({ top: 0, behavior: 'smooth' }) }
+      ];
+
+      function getProjectElement(key) {
+        const candidates = [
+          `[data-project="${key}"]`,
+          `[data-project-key="${key}"]`,
+          `#${key}`,
+          `.${key}`,
+          `[href*="${key}"]`
+        ];
+        for (const selector of candidates) {
+          const element = document.querySelector(selector);
+          if (element) return element.closest('.project-card') || element;
+        }
+        const nameMap = {
+          athena: 'Athena Voice Bot',
+          mission: 'MissionShield',
+          knightlang: 'KnightLang',
+          superbit: 'Super Bit',
+          mealmatch: 'MealMatch',
+          antiscam: 'Anti-Scam'
+        };
+        const target = nameMap[key];
+        return [...document.querySelectorAll('.project-card')].find(card =>
+          card.textContent.toLowerCase().includes(target.toLowerCase())
+        ) || document.getElementById('work');
+      }
+
+      function leaveRecruiterModeForHiddenDestination(target) {
+        if (!document.body.classList.contains('recruiter-mode')) return;
+
+        const hiddenByRecruiterMode =
+          !target ||
+          getComputedStyle(target).display === 'none' ||
+          target.closest('#about, #journey') ||
+          target.closest('.project-card:nth-of-type(n+4)');
+
+        if (hiddenByRecruiterMode) {
+          setRecruiterMode(false, true);
+        }
+      }
+
+      function scrollToProject(key) {
+        const target = getProjectElement(key);
+        leaveRecruiterModeForHiddenDestination(target);
+        closeCommandPalette();
+        setTimeout(() => {
+          const refreshedTarget = getProjectElement(key);
+          refreshedTarget?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 120);
+      }
+
+      function goToSection(id) {
+        const target = document.getElementById(id);
+        leaveRecruiterModeForHiddenDestination(target);
+        closeCommandPalette();
+        setTimeout(() => {
+          document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 120);
+      }
+
+      function openPortfolioAssistant() {
+        closeCommandPalette();
+
+        const launcher =
+          document.getElementById('aiLauncher') ||
+          document.querySelector('.ai-launcher') ||
+          document.querySelector('[aria-controls="portfolioAssistant"]');
+
+        const assistant = document.getElementById('portfolioAssistant');
+
+        setTimeout(() => {
+          if (assistant?.classList.contains('is-open')) {
+            assistant.querySelector('input, textarea')?.focus();
+            return;
+          }
+          launcher?.click();
+        }, 80);
+      }
+
+      function renderCommandPalette(query = '') {
+        const normalized = query.trim().toLowerCase();
+        commandPaletteFiltered = commandPaletteItems.filter(item => {
+          const haystack = `${item.title} ${item.subtitle} ${item.keywords}`.toLowerCase();
+          return !normalized || haystack.includes(normalized);
+        });
+
+        commandPaletteActiveIndex = Math.min(commandPaletteActiveIndex, Math.max(0, commandPaletteFiltered.length - 1));
+
+        if (!commandPaletteFiltered.length) {
+          commandPaletteList.innerHTML = `<div class="command-empty">No matching command found.<br>Try searching for a project, résumé, contact, recruiter mode, or Bit.</div>`;
+          return;
+        }
+
+        let currentGroup = '';
+        commandPaletteList.innerHTML = commandPaletteFiltered.map((item, index) => {
+          const groupLabel = item.group !== currentGroup
+            ? `<div class="command-group-label">${item.group}</div>`
+            : '';
+          currentGroup = item.group;
+          return `${groupLabel}
+            <button class="command-item ${index === commandPaletteActiveIndex ? 'is-active' : ''}" type="button" data-command-index="${index}">
+              <span class="command-item-icon">${item.icon}</span>
+              <span class="command-item-copy">
+                <span class="command-item-title">${item.title}</span>
+                <span class="command-item-subtitle">${item.subtitle}</span>
+              </span>
+              <span class="command-item-key">${item.key || '↵'}</span>
+            </button>`;
+        }).join('');
+
+        commandPaletteList.querySelectorAll('[data-command-index]').forEach(button => {
+          button.addEventListener('mouseenter', () => {
+            commandPaletteActiveIndex = Number(button.dataset.commandIndex);
+            updateCommandPaletteActive();
+          });
+          button.addEventListener('click', () => executeCommand(Number(button.dataset.commandIndex)));
+        });
+      }
+
+      function updateCommandPaletteActive() {
+        commandPaletteList.querySelectorAll('[data-command-index]').forEach((button, index) => {
+          button.classList.toggle('is-active', index === commandPaletteActiveIndex);
+        });
+        commandPaletteList.querySelector(`[data-command-index="${commandPaletteActiveIndex}"]`)
+          ?.scrollIntoView({ block: 'nearest' });
+      }
+
+      function executeCommand(index) {
+        const item = commandPaletteFiltered[index];
+        if (!item) return;
+        item.action();
+      }
+
+      function openCommandPalette() {
+        commandPaletteBackdrop.classList.add('is-open');
+        document.body.classList.add('command-palette-open');
+        commandPaletteInput.value = '';
+        commandPaletteActiveIndex = 0;
+        renderCommandPalette();
+        requestAnimationFrame(() => commandPaletteInput.focus());
+      }
+
+      function closeCommandPalette() {
+        commandPaletteBackdrop.classList.remove('is-open');
+        document.body.classList.remove('command-palette-open');
+      }
+
+      commandPaletteTrigger?.addEventListener('click', openCommandPalette);
+      commandPaletteClose?.addEventListener('click', closeCommandPalette);
+      commandPaletteBackdrop?.addEventListener('click', event => {
+        if (event.target === commandPaletteBackdrop) closeCommandPalette();
+      });
+      commandPaletteInput?.addEventListener('input', () => {
+        commandPaletteActiveIndex = 0;
+        renderCommandPalette(commandPaletteInput.value);
+      });
+      commandPaletteInput?.addEventListener('keydown', event => {
+        if (event.key === 'ArrowDown') {
+          event.preventDefault();
+          commandPaletteActiveIndex = Math.min(commandPaletteActiveIndex + 1, commandPaletteFiltered.length - 1);
+          updateCommandPaletteActive();
+        } else if (event.key === 'ArrowUp') {
+          event.preventDefault();
+          commandPaletteActiveIndex = Math.max(commandPaletteActiveIndex - 1, 0);
+          updateCommandPaletteActive();
+        } else if (event.key === 'Enter') {
+          event.preventDefault();
+          executeCommand(commandPaletteActiveIndex);
+        }
+      });
+
+      document.addEventListener('keydown', event => {
+        const target = event.target;
+        const isTyping = target instanceof HTMLInputElement || target instanceof HTMLTextAreaElement || target?.isContentEditable;
+
+        if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') {
+          event.preventDefault();
+          commandPaletteBackdrop.classList.contains('is-open') ? closeCommandPalette() : openCommandPalette();
+          return;
+        }
+
+        if (event.key === '/' && !isTyping && !commandPaletteBackdrop.classList.contains('is-open')) {
+          event.preventDefault();
+          openCommandPalette();
+          return;
+        }
+
+        if (event.key === 'Escape' && commandPaletteBackdrop.classList.contains('is-open')) {
+          event.preventDefault();
+          closeCommandPalette();
+          return;
+        }
+
+        if (event.key === 'Escape') {
+          const assistant = document.getElementById('portfolioAssistant');
+          const assistantClose =
+            document.getElementById('aiClose') ||
+            assistant?.querySelector('[aria-label*="Close"], .assistant-close, .ai-close');
+
+          if (assistant?.classList.contains('is-open')) {
+            event.preventDefault();
+            assistantClose?.click();
+            return;
+          }
+        }
+
+        if (!isTyping && !event.metaKey && !event.ctrlKey && !event.altKey) {
+          const key = event.key.toLowerCase();
+
+          if (key === 'b') {
+            event.preventDefault();
+            openPortfolioAssistant();
+            return;
+          }
+
+          if (key === 'r') {
+            event.preventDefault();
+            window.open('DAndre_Knight_R.pdf', '_blank', 'noopener,noreferrer');
+            return;
+          }
+
+          if (key === 'c') {
+            event.preventDefault();
+            goToSection('contact');
+            return;
+          }
+
+          if (key === 'f') {
+            event.preventDefault();
+            goToSection('feedback');
+            return;
+          }
+
+          if (key === 't') {
+            event.preventDefault();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }
+        }
+      });
+
+      // Interactive project comparison.
+      const comparisonProjects = {
+        athena: {
+          number: '01',
+          code: 'AI',
+          name: 'Athena Voice Bot',
+          category: 'Healthcare AI and voice simulation',
+          accent: '#68e4ff',
+          glow: 'rgba(104,228,255,.18)',
+          problem: 'Healthcare teams need realistic patient-call practice, searchable transcripts, and measurable conversation quality.',
+          role: 'Designed and built the Python and Flask application, workflow logic, voice integration, storage, analysis, dashboard, and testing.',
+          stack: ['Python', 'Flask', 'Gemini', 'Twilio', 'SQLite'],
+          feature: 'Six live conversation workflows with transcripts, quality scoring, warnings, analytics, search, filtering, and reporting.',
+          challenge: 'Keeping voice conversations stateful and natural while logging enough structured information for reliable analysis.',
+          lesson: 'AI features become much stronger when conversation design, observability, and fallback behavior are treated as core engineering work.',
+          status: 'Public repository · active portfolio project',
+          link: 'https://github.com/dandrek123/athena-voice-bot'
+        },
+        mission: {
+          number: '02',
+          code: 'SEC',
+          name: 'MissionShield',
+          category: 'Cyber operations and readiness',
+          accent: '#b9ff39',
+          glow: 'rgba(185,255,57,.16)',
+          problem: 'Operational teams need a clear way to understand system readiness, active incidents, severity, risk, and response actions.',
+          role: 'Built the React interface, Express and Node.js backend, SQLite data layer, forms, filtering, and readiness views.',
+          stack: ['React', 'Node.js', 'Express', 'SQLite', 'JavaScript'],
+          feature: 'A defense-style dashboard that connects mission systems, incidents, operational risk, severity, and response tracking.',
+          challenge: 'Turning several kinds of operational data into an interface that remains fast to scan and easy to act on.',
+          lesson: 'Security dashboards must prioritize decision clarity instead of displaying every available data point at once.',
+          status: 'Public repository · active portfolio project',
+          link: 'https://github.com/dandrek123/MissionShield'
+        },
+        knightlang: {
+          number: '03',
+          code: 'LANG',
+          name: 'KnightLang',
+          category: 'Programming language design',
+          accent: '#a887ff',
+          glow: 'rgba(168,135,255,.17)',
+          problem: 'Understanding language internals requires more than using a language, so KnightLang builds the execution pipeline from source text to results.',
+          role: 'Designed the syntax and implemented the lexer, parser, abstract syntax tree, interpreter, functions, control flow, and errors.',
+          stack: ['Python', 'Lexer', 'Parser', 'AST', 'Interpreter'],
+          feature: 'A complete custom interpreted language with variables, functions, loops, conditionals, strings, expressions, and indentation-based blocks.',
+          challenge: 'Maintaining consistent grammar and execution behavior as new syntax and language features were added.',
+          lesson: 'Building a language creates a much deeper understanding of parsing, program structure, runtime behavior, and error handling.',
+          status: 'Public repository · working language implementation',
+          link: 'https://github.com/dandrek123/KnightLang'
+        },
+        superbit: {
+          number: '04',
+          code: 'LOCAL',
+          name: 'Super Bit AI',
+          category: 'Private personal AI system',
+          accent: '#68e4ff',
+          glow: 'rgba(104,228,255,.16)',
+          problem: 'A personal assistant should support real workflows without sending every document, command, or memory to a remote service.',
+          role: 'Built the Python assistant architecture, local model workflows, speech, memory, reminders, automation helpers, bilingual behavior, and owner controls.',
+          stack: ['Python', 'Local LLMs', 'Voice', 'Automation', 'Security'],
+          feature: 'Private voice and text assistance with memory, document analysis, reminders, automation, bilingual support, and approval-based actions.',
+          challenge: 'Balancing useful autonomy with safe approvals, owner verification, local privacy, and dependable tool execution.',
+          lesson: 'Personal AI systems need strong boundaries and transparent actions just as much as they need intelligent responses.',
+          status: 'Private and local · ongoing personal system',
+          link: ''
+        },
+        mealmatch: {
+          number: '05',
+          code: 'WEB',
+          name: 'MealMatch',
+          category: 'Full-stack meal discovery',
+          accent: '#ff9b5e',
+          glow: 'rgba(255,155,94,.16)',
+          problem: 'Users need a simple way to discover meal options while accounts, preferences, activity, and administrative data remain organized.',
+          role: 'Implemented PHP pages and backend logic, MySQL schema and queries, authentication, sessions, analytics, and administration tools.',
+          stack: ['PHP', 'MySQL', 'SQL', 'HTML/CSS', 'Authentication'],
+          feature: 'Account-based meal discovery with session management, relational data, analytics, and administrative capabilities.',
+          challenge: 'Keeping authentication, sessions, database relationships, and page behavior consistent across the full application.',
+          lesson: 'Reliable full-stack applications depend on thoughtful data modeling and server-side state management, not only interface design.',
+          status: 'Public repository · completed full-stack project',
+          link: 'https://github.com/dandrek123/MealMatch'
+        },
+        antiscam: {
+          number: '06',
+          code: 'MERN',
+          name: 'Anti-Scam Community',
+          category: 'Community security platform',
+          accent: '#ff7185',
+          glow: 'rgba(255,113,133,.15)',
+          problem: 'People need a shared place to report suspicious activity, review scam patterns, discuss evidence, and warn other users.',
+          role: 'Contributed to the MERN application, including interface pages, routing, user-facing content, team integration, testing, and repository workflows.',
+          stack: ['MongoDB', 'Express', 'React', 'Node.js', 'Authentication'],
+          feature: 'Authenticated scam reporting with profiles, comments, voting, tags, moderation tools, and forum-style collaboration.',
+          challenge: 'Coordinating team contributions while keeping routes, interface components, authentication, and shared application behavior aligned.',
+          lesson: 'Team software development requires disciplined integration and communication alongside individual coding ability.',
+          status: 'Public repository · university capstone team project',
+          link: 'https://github.com/dandrek123/Bit_by_Bit'
+        }
+      };
+
+      const compareProjectAButton = document.getElementById('compareProjectAButton');
+      const compareProjectBButton = document.getElementById('compareProjectBButton');
+      const compareProjectAValue = document.getElementById('compareProjectAValue');
+      const compareProjectBValue = document.getElementById('compareProjectBValue');
+      const compareProjectAMenu = document.getElementById('compareProjectAMenu');
+      const compareProjectBMenu = document.getElementById('compareProjectBMenu');
+      const compareCardA = document.getElementById('compareCardA');
+      const compareCardB = document.getElementById('compareCardB');
+      const compareReset = document.getElementById('compareReset');
+
+      let selectedProjectA = 'athena';
+      let selectedProjectB = 'mission';
+
+      function comparisonCard(project) {
+        const stack = project.stack.map(item => `<span>${item}</span>`).join('');
+        const repository = project.link
+          ? `<a class="compare-link hover-target" href="${project.link}" target="_blank" rel="noopener noreferrer">Open repository <span aria-hidden="true">↗</span></a>`
+          : `<span class="compare-link is-private">Private/local project</span>`;
+
+        return `
+          <div class="compare-card-head" data-code="${project.code}" style="--compare-accent:${project.accent};--compare-glow:${project.glow}">
+            <span class="compare-index">${project.number} · ${project.category}</span>
+            <h3 class="compare-name">${project.name}</h3>
+            <p class="compare-category">${project.category}</p>
+          </div>
+          <dl class="compare-rows" style="--compare-accent:${project.accent}">
+            <div class="compare-row"><dt>Problem</dt><dd>${project.problem}</dd></div>
+            <div class="compare-row"><dt>My role</dt><dd>${project.role}</dd></div>
+            <div class="compare-row"><dt>Stack</dt><dd><div class="compare-stack">${stack}</div></dd></div>
+            <div class="compare-row"><dt>Strongest feature</dt><dd>${project.feature}</dd></div>
+            <div class="compare-row"><dt>Challenge</dt><dd>${project.challenge}</dd></div>
+            <div class="compare-row"><dt>What I learned</dt><dd>${project.lesson}</dd></div>
+            <div class="compare-row"><dt>Status</dt><dd><span class="compare-status">${project.status}</span></dd></div>
+            <div class="compare-row"><dt>Project link</dt><dd>${repository}</dd></div>
+          </dl>
+        `;
+      }
+
+      function renderComparison(card, key) {
+        const project = comparisonProjects[key] || comparisonProjects.athena;
+        card.innerHTML = comparisonCard(project);
+        card.style.setProperty('--compare-accent', project.accent);
+        card.style.setProperty('--compare-glow', project.glow);
+        card.classList.remove('compare-change');
+        void card.offsetWidth;
+        card.classList.add('compare-change');
+      }
+
+      function closeCompareMenus(except = null) {
+        [
+          [compareProjectAButton, compareProjectAMenu],
+          [compareProjectBButton, compareProjectBMenu]
+        ].forEach(([button, menu]) => {
+          if (menu !== except) {
+            button?.setAttribute('aria-expanded', 'false');
+            menu?.classList.remove('is-open');
+          }
+        });
+      }
+
+      function buildCompareMenu(side) {
+        const isA = side === 'a';
+        const selectedKey = isA ? selectedProjectA : selectedProjectB;
+        const excludedKey = isA ? selectedProjectB : selectedProjectA;
+        const menu = isA ? compareProjectAMenu : compareProjectBMenu;
+
+        menu.innerHTML = Object.entries(comparisonProjects)
+          .filter(([key]) => key !== excludedKey)
+          .map(([key, project]) => `
+            <button
+              class="compare-dropdown-option"
+              type="button"
+              role="option"
+              aria-selected="${key === selectedKey}"
+              data-project-key="${key}">
+              <span>${project.name}</span>
+            </button>
+          `)
+          .join('');
+
+        menu.querySelectorAll('[data-project-key]').forEach(option => {
+          option.addEventListener('click', () => {
+            const key = option.dataset.projectKey;
+            if (isA) selectedProjectA = key;
+            else selectedProjectB = key;
+            updateComparison();
+            closeCompareMenus();
+          });
+        });
+      }
+
+      function updateComparison() {
+        compareProjectAValue.textContent = comparisonProjects[selectedProjectA].name;
+        compareProjectBValue.textContent = comparisonProjects[selectedProjectB].name;
+        buildCompareMenu('a');
+        buildCompareMenu('b');
+        renderComparison(compareCardA, selectedProjectA);
+        renderComparison(compareCardB, selectedProjectB);
+
+        try {
+          sessionStorage.setItem('dandre-compare-a', selectedProjectA);
+          sessionStorage.setItem('dandre-compare-b', selectedProjectB);
+        } catch (_) {}
+      }
+
+      function toggleCompareMenu(button, menu) {
+        const willOpen = button.getAttribute('aria-expanded') !== 'true';
+        closeCompareMenus(menu);
+        button.setAttribute('aria-expanded', String(willOpen));
+        menu.classList.toggle('is-open', willOpen);
+        if (willOpen) {
+          menu.querySelector('[aria-selected="true"]')?.focus({ preventScroll: true });
+        }
+      }
+
+      compareProjectAButton?.addEventListener('click', () => toggleCompareMenu(compareProjectAButton, compareProjectAMenu));
+      compareProjectBButton?.addEventListener('click', () => toggleCompareMenu(compareProjectBButton, compareProjectBMenu));
+
+      document.addEventListener('click', event => {
+        if (!event.target.closest('.compare-dropdown')) closeCompareMenus();
+      });
+
+      document.addEventListener('keydown', event => {
+        if (event.key === 'Escape') closeCompareMenus();
+      });
+
+      if (compareCardA && compareCardB) {
+        try {
+          const savedA = sessionStorage.getItem('dandre-compare-a');
+          const savedB = sessionStorage.getItem('dandre-compare-b');
+          if (savedA && comparisonProjects[savedA]) selectedProjectA = savedA;
+          if (savedB && comparisonProjects[savedB]) selectedProjectB = savedB;
+        } catch (_) {}
+
+        if (selectedProjectA === selectedProjectB) selectedProjectB = selectedProjectA === 'mission' ? 'athena' : 'mission';
+        updateComparison();
+
+        compareReset?.addEventListener('click', () => {
+          selectedProjectA = 'athena';
+          selectedProjectB = 'mission';
+          updateComparison();
+          if (toast) toast.textContent = 'Comparison reset to Athena and MissionShield';
+        });
+      }
+
+      // Recruiter mode: simplifies the page and prioritizes hiring information.
+      const recruiterModeToggle = document.getElementById('recruiterModeToggle');
+      const recruiterModeStorageKey = 'dandre-recruiter-mode';
+
+      function setRecruiterMode(enabled, announce = false) {
+        document.body.classList.toggle('recruiter-mode', enabled);
+        recruiterModeToggle?.setAttribute('aria-pressed', String(enabled));
+        try {
+          sessionStorage.setItem(recruiterModeStorageKey, enabled ? '1' : '0');
+        } catch (_) {}
+
+        if (announce && toast) {
+          toast.textContent = enabled ? 'Recruiter mode enabled' : 'Explorer mode restored';
+        }
+
+        requestAnimationFrame(() => {
+          window.dispatchEvent(new Event('resize'));
+          window.dispatchEvent(new Event('scroll'));
+        });
+      }
+
+      let savedRecruiterMode = false;
+      try {
+        savedRecruiterMode = sessionStorage.getItem(recruiterModeStorageKey) === '1';
+      } catch (_) {}
+      setRecruiterMode(savedRecruiterMode);
+
+      recruiterModeToggle?.addEventListener('click', () => {
+        const enabled = recruiterModeToggle.getAttribute('aria-pressed') !== 'true';
+        setRecruiterMode(enabled, true);
+      });
 
       // Portfolio feedback. GitHub Pages is static, so this prepares a mail draft
       // instead of pretending the response was submitted to a server.
