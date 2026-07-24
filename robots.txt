@@ -1,0 +1,17 @@
+# AI training crawler opt-out
+
+User-agent: GPTBot
+Disallow: /
+
+User-agent: ClaudeBot
+Disallow: /
+
+User-agent: Google-Extended
+Disallow: /
+
+User-agent: CCBot
+Disallow: /
+
+# All other crawlers, including standard search indexing, remain allowed.
+User-agent: *
+Allow: /
